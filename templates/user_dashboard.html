@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard</title>
+  <style>
+    :root {
+      --primary: #5e1f92;
+      --primary-dark: #47166f;
+      --primary-light: #a87edb;
+      --accent-bg: #dbc8f0;
+      --page-bg: #f4f1fa;
+      --text-color: #2e2e2e;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--page-bg);
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: var(--primary);
+      color: white;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .navbar a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 30px;
+      padding: 40px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    h3 {
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+      color: var(--text-color);
+    }
+    th {
+      background-color: var(--accent-bg);
+      color: var(--primary-dark);
+    }
+    td button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    td button:hover {
+      background: var(--primary-dark);
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+    button[type="submit"] {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      width: 100%;
+    }
+    button[type="submit"]:hover {
+      background: var(--primary-dark);
+    }
+    .form-group label {
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    .empty-message {
+      color: #999;
+      font-style: italic;
+      padding: 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div>
+      <a href="{{ url_for('dashboard') }}">Menu</a>
+      <a href="#">Search</a>
+      <a href="#">Summary</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+    <a href="#" style="font-weight: bold;">Edit Profile</a>
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+      <h3>Recent Parking History</h3>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Location</th>
+          <th>Time</th>
+        </tr>
+        {% for booking in bookings %}
+        <tr>
+          <td>{{ booking.id }}</td>
+          <td>{{ booking.location }}</td>
+          <td>{{ booking.timestamp.strftime('%d-%m-%Y %H:%M') }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="empty-message">No parking history yet.</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Search Parking Lots</h3>
+      <form method="GET" action="#">
+        <label for="lotSearch">Search by Pin Code or Address</label>
+        <input type="text" id="lotSearch" name="location" placeholder="Enter location...">
+        <button type="submit">Search</button>
+      </form>
+      {% if search_results is not none %}
+        {% if results %}
+          <table>
+            <tr>
+              <th>Lot ID</th>
+              <th>Address</th>
+              <th>Available Spots</th>
+              <th>Action</th>
+            </tr>
+            {% for lot in results %}
+            <tr>
+              <td>{{ lot.lot_id }}</td>
+              <td>{{ lot.address }}</td>
+              <td>{{ lot.available_spots }}</td>
+              <td><a href="#">Book</a></td>
+            </tr>
+            {% endfor %}
+          </table>
+        {% else %}
+          <p style="margin-top: 20px; font-style: italic; color: #999;">No results found.</p>
+        {% endif %}
+      {% endif %}
+    </div>
+
+  </div>
+
+</body>
+</html>

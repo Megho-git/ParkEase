@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Signup</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .signup-box {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+    .signup-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .signup-box input[type="text"],
+    .signup-box input[type="email"],
+    .signup-box input[type="password"],
+    .signup-box textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .signup-box button {
+      width: 100%;
+      padding: 10px;
+      background: #962edb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .signup-box button:hover {
+      background: #6a1791;
+    }
+    .signup-box a {
+      display: block;
+      margin-top: 15px;
+      color: #5e1f92;
+      text-decoration: none;
+    }
+    .login-text {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #0c0505;
+    }
+    .login-text a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .login-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="signup-box">
+    <h2>User Signup</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div style="color: red; margin-bottom: 10px;">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('signup') }}">
+      <input type="email" name="email" placeholder="Email ID / Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <input type="text" name="fullname" placeholder="Full Name" required>
+      <textarea rows="3" name="address" placeholder="Address" required></textarea>
+      <input type="text" name="pincode" placeholder="Pin Code" required>
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="login-text">
+      Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+    </div>
+  </div>
+</body>
+</html>
