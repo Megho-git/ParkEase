@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    :root {
+      --primary: #5e1f92;
+      --primary-dark: #47166f;
+      --primary-light: #a87edb;
+      --accent-bg: #dbc8f0;
+      --page-bg: #f4f1fa;
+      --text-color: #2e2e2e;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #f2e7fa, #dbc8f0, #f6e3fc);
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background: var(--primary);
+      color: white;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .navbar a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 30px;
+      padding: 40px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    h3 {
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+      color: var(--text-color);
+    }
+    th {
+      background-color: var(--accent-bg);
+      color: var(--primary-dark);
+    }
+    button, a.button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+    button:hover, a.button:hover {
+      background: var(--primary-dark);
+    }
+    .actions a {
+      margin: 0 5px;
+    }
+
+    .welcome-text {
+      font-size: 22px;
+      font-weight: 600;
+      margin-right: 40px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="welcome-text">Welcome Admin</div>
+    <div>
+      <a href="{{ url_for('admin_dashboard') }}">Home</a>
+      <a href="#">Users</a>
+      <a href="#">Summary</a>
+      <a href="#">Search</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+
+    <div class="card">
+      <h3>Parking Lots</h3>
+      <table>
+        <tr>
+          <th>Lot ID</th>
+          <th>Location</th>
+          <th>Available Spots</th>
+          <th>Actions</th>
+        </tr>
+        {% for lot in parking_lots %}
+        <tr>
+          <td>{{ lot.id }}</td>
+          <td>{{ lot.prime_location_name }}</td>
+          <td>{{ lot.available_spots_count }}</td>
+          <td class="actions">
+            <a href="{{ url_for('edit_lot', lot_id=lot.id) }}" class="button">Edit</a>
+            <a href="{{ url_for('delete_lot', lot_id=lot.id) }}" class="button">Delete</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No parking lots found.</td></tr>
+        {% endfor %}
+      </table>
+      <br>
+      <a href="{{ url_for('add_lot') }}" class="button">+ Add Lot</a>
+    </div>
+
+    <!-- Add more cards like Users List, Summary Chart etc. later -->
+
+  </div>
+
+</body>
+</html>

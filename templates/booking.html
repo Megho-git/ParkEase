@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reserve Parking Spot</title>
+  <style>
+    :root {
+      --primary: #962edb;
+      --primary-dark: #6a1791;
+      --page-bg: linear-gradient(135deg, #f4f1fa, #e9dcf5);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: var(--page-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .booking-box {
+      background: #fff;
+      padding: 30px 50px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+      width: 450px;
+      text-align: center;
+    }
+
+    .booking-box h2 {
+      margin-bottom: 20px;
+      color: var(--primary-dark);
+    }
+
+    .booking-box input[type="text"],
+    .booking-box input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #f9f7fc;
+    }
+
+    .booking-box button {
+      width: 48%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .booking-box button:hover {
+      background: var(--primary-dark);
+    }
+
+    .booking-box .cancel-btn {
+      background: #bbb;
+    }
+
+    .booking-box .cancel-btn:hover {
+      background: #999;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="booking-box">
+    <h2>Reserve Your Spot</h2>
+
+    <form method="POST" action="{{ url_for('book_spot', lot_id=lot_id, user_id=user_id) }}">
+
+      <label>User ID</label>
+      <input type="text" name="user_id" value="{{ user_id }}" readonly>
+
+      <label>Lot ID</label>
+      <input type="text" name="lot_id" value="{{ lot_id }}" readonly>
+
+      <label>Spot ID</label>
+      <input type="text" name="spot_id" value="{{ spot_id }}" readonly>
+
+      <label>Vehicle Number</label>
+      <input type="text" name="vehicle_number" required>
+
+      <button type="submit">Reserve</button>
+      <a href="{{ url_for('user_dashboard') }}">
+        <button type="button" class="cancel-btn">Cancel</button>
+      </a>
+
+    </form>
+
+  </div>
+</body>
+
+</html>

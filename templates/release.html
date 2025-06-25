@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Release Parking Spot</title>
+  <style>
+    :root {
+      --primary: #5e1f92;
+      --primary-dark: #47166f;
+      --accent-bg: #eee6f7;
+      --page-bg: linear-gradient(135deg, #f4f1fa, #e9dcf5);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: var(--page-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .booking-box {
+      background: #fff;
+      padding: 30px 50px;
+      border-radius: 16px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+      width: 450px;
+      text-align: center;
+    }
+
+    .booking-box h2 {
+      margin-bottom: 20px;
+      color: var(--primary-dark);
+    }
+
+    .booking-box input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #f9f7fc;
+    }
+
+    .booking-box button {
+      width: 48%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .booking-box button:hover {
+      background: var(--primary-dark);
+    }
+
+    .booking-box .cancel-btn {
+      background: #bbb;
+    }
+
+    .booking-box .cancel-btn:hover {
+      background: #999;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="booking-box">
+    <h2>Release Parking Spot</h2>
+
+    <form method="POST">
+      <label>Spot ID</label>
+      <input type="text" value="{{ spot.id }}" readonly>
+
+      <label>Vehicle Number</label>
+      <input type="text" value="{{ reservation.vehicle_number }}" readonly>
+
+      <label>Parking Time</label>
+      <input type="text" value="{{ reservation.parking_time.strftime('%Y-%m-%d %H:%M:%S') }}" readonly>
+
+      <label>Release Time</label>
+      <input type="text" value="{{ release_time.strftime('%Y-%m-%d %H:%M:%S') }}" readonly>
+
+      <label>Total Cost (₹{{ spot.lot.price_per_hour }}/hour)</label>
+      <input type="text" value="₹{{ total_cost }}" readonly>
+
+      <button type="submit">Release</button>
+      <a href="{{ url_for('user_dashboard') }}">
+        <button type="button" class="cancel-btn">Cancel</button>
+      </a>
+    </form>
+
+  </div>
+
+</body>
+</html>
