@@ -15,11 +15,9 @@
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
       background: linear-gradient(135deg, #f2e7fa, #dbc8f0, #f6e3fc);
-      background-attachment: fixed;
       margin: 0;
       padding: 0;
     }
-
     .navbar {
       background: var(--primary);
       color: white;
@@ -27,7 +25,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     .navbar a {
       color: white;
@@ -39,112 +36,153 @@
       text-decoration: underline;
     }
     .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 30px;
-      padding: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 30px 50px;
     }
-    .card {
+    .lot-card {
       background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 340px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
       transition: transform 0.2s ease;
+      overflow: hidden;
     }
-    .card:hover {
+    .lot-card:hover {
       transform: translateY(-4px);
     }
-    h3 {
-      color: var(--primary-dark);
-      margin-bottom: 15px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 12px;
-      text-align: center;
-      border-bottom: 1px solid #eee;
-      color: var(--text-color);
-    }
-    th {
-      background-color: var(--accent-bg);
+    .lot-card h3 {
+      margin: 0 0 10px;
       color: var(--primary-dark);
     }
-    button, a.button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
+    .lot-card .actions a {
+      color: var(--primary);
+      margin-right: 10px;
+      font-size: 14px;
       text-decoration: none;
       font-weight: 500;
-      transition: background 0.3s ease;
     }
-    button:hover, a.button:hover {
+    .lot-card .actions a:hover {
+      text-decoration: underline;
+    }
+    .occupancy {
+      margin: 12px 0;
+      color: #444;
+      font-weight: 500;
+    }
+    .spot-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .spot {
+      height: 40px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+    .spot.available {
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    .spot.available:hover {
+      background: var(--primary-light);
+      color: white;
+    }
+    .spot.occupied {
+      background: var(--primary);
+      color: #fff;
+      border: 1px solid var(--primary-dark);
+    }
+    .spot.occupied:hover {
       background: var(--primary-dark);
     }
-    .actions a {
-      margin: 0 5px;
+    .add-lot-btn {
+      margin: 30px 50px;
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .add-lot-btn:hover {
+      background: var(--primary-dark);
+    }
+    .spot-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+      overflow-y: auto;
+      padding-right: 4px;
+      max-height: calc((40px + 8px) * 3); /* 3 rows: 40px height + 8px gap each */
     }
 
-    .welcome-text {
-      font-size: 22px;
-      font-weight: 600;
-      margin-right: 40px;
+    .spot-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+    .spot-grid::-webkit-scrollbar-thumb {
+      background-color: var(--primary-light);
+      border-radius: 4px;
+    }
+    .spot-grid::-webkit-scrollbar-track {
+      background: #eee;
+      border-radius: 4px;
     }
 
   </style>
 </head>
+
 <body>
 
-  <div class="navbar">
-    <div class="welcome-text">Welcome Admin</div>
-    <div>
-      <a href="{{ url_for('admin_dashboard') }}">Home</a>
-      <a href="#">Users</a>
-      <a href="#">Summary</a>
-      <a href="#">Search</a>
-      <a href="{{ url_for('logout') }}">Logout</a>
-    </div>
+<div class="navbar">
+  <div class="welcome-text">Welcome Admin</div>
+  <div>
+    <a href="{{ url_for('admin_dashboard') }}">Home</a>
+    <a href="#">Users</a>
+    <a href="#">Summary</a>
+    <a href="#">Search</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
   </div>
+</div>
 
+<div class="container">
+  {% for lot in parking_lots %}
+  <div class="lot-card">
+    <h3>Parking Location: {{ lot.prime_location_name }}</h3>
+    <div class="actions">
+      
 
-
-  <div class="container">
-
-    <div class="card">
-      <h3>Parking Lots</h3>
-      <table>
-        <tr>
-          <th>Lot ID</th>
-          <th>Location</th>
-          <th>Available Spots</th>
-          <th>Actions</th>
-        </tr>
-        {% for lot in parking_lots %}
-        <tr>
-          <td>{{ lot.id }}</td>
-          <td>{{ lot.prime_location_name }}</td>
-          <td>{{ lot.available_spots_count }}</td>
-          <td class="actions">
-            <a href="{{ url_for('edit_lot', lot_id=lot.id) }}" class="button">Edit</a>
-            <a href="{{ url_for('delete_lot', lot_id=lot.id) }}" class="button">Delete</a>
-          </td>
-        </tr>
+    </div>
+    <div class="occupancy">Occupied: {{ lot.occupied_spots_count }}/{{ lot.total_spots }}</div>
+    <div class="spot-grid">
+      {% for spot in lot.spots %}
+        {% if spot.status == 'O' %}
+          <div class="spot occupied">O</div>
         {% else %}
-        <tr><td colspan="4">No parking lots found.</td></tr>
-        {% endfor %}
-      </table>
-      <br>
-      <a href="{{ url_for('add_lot') }}" class="button">+ Add Lot</a>
+          <div class="spot available">A</div>
+        {% endif %}
+      {% endfor %}
     </div>
-
-    <!-- Add more cards like Users List, Summary Chart etc. later -->
-
   </div>
+  {% endfor %}
+</div>
+
+<a href="{{ url_for('add_lot') }}" class="add-lot-btn">+ Add Lot</a>
 
 </body>
 </html>

@@ -1,22 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from models.models import db, User, ParkingLot, ParkingSpot, Reservation, RecentBooking
+from models.models import db, User, ParkingLot, ParkingSpot, Reservation
 from datetime import datetime
 from flask_login import current_user
 
 app = Flask(__name__)
 app.secret_key = 'secret-key'
 
-# Database config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-# Home redirects to login
 @app.route('/')
 def home():
     return redirect(url_for('login'))
 
-# Signup route
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -47,7 +44,6 @@ def signup():
 
     return render_template('signup.html')
 
-# Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -77,7 +73,13 @@ def admin_dashboard():
         return redirect(url_for('login'))
 
     lots = ParkingLot.query.all()
-    return render_template('admin_dashboard.html', lots=lots)
+
+    # Attach spot status list for dashboard display
+    for lot in lots:
+        lot.spot_statuses = [{'status': spot.status} for spot in lot.spots]
+
+    return render_template('admin_dashboard.html', parking_lots=lots)
+
 
 
 @app.route('/search_parking', methods=['GET'])
@@ -104,7 +106,6 @@ def search_parking():
         search_results=bool(results)
     )
 
-# User Dashboard route
 @app.route('/dashboard')
 def user_dashboard():
     location_query = request.args.get('location', '')
@@ -138,10 +139,8 @@ def book_spot(lot_id, user_id):
                     flash('Invalid or already occupied spot.', 'danger')
                     return redirect(url_for('user_dashboard'))
 
-                # Mark spot occupied
                 spot.status = 'O'
 
-                # Create new reservation
                 reservation = Reservation(
                     spot_id=spot_id,
                     user_id=user_id,
@@ -159,7 +158,6 @@ def book_spot(lot_id, user_id):
 
         return redirect(url_for('user_dashboard'))
 
-    # GET — fetch first available spot
     available_spot = ParkingSpot.query.filter_by(lot_id=lot_id, status='A').first()
     if not available_spot:
         flash('No available spots.', 'danger')
@@ -182,11 +180,10 @@ def release_spot(reservation_id):
     if request.method == 'POST':
         try:
             with db.session.begin_nested():
-                # Set leaving time if not already set
                 if not reservation.leaving_time:
                     reservation.leaving_time = datetime.utcnow()
                     spot.status = 'A'
-                    db.session.flush()  # to reflect changes immediately for property
+                    db.session.flush()
 
             db.session.commit()
             flash("Parking spot released successfully!", "success")
@@ -197,10 +194,9 @@ def release_spot(reservation_id):
             print(f"Release error: {e}")
             flash("Could not release spot. Try again.", "danger")
 
-    # Calculate cost
     release_time = datetime.utcnow()
     parking_duration = (release_time - reservation.parking_time).total_seconds() / 3600
-    total_cost = round(parking_duration * 150, 2)
+    total_cost = round(parking_duration * lot.price_per_hour, 2)
 
     return render_template(
         'release.html',
@@ -229,7 +225,15 @@ def add_lot():
             available_spots=available_spots
         )
         db.session.add(new_lot)
+        db.session.commit()  
+
+        # Now create spots
+        for _ in range(int(available_spots)):
+            spot = ParkingSpot(lot_id=new_lot.id, status='A')
+            db.session.add(spot)
+
         db.session.commit()
+
 
         flash("Parking lot added successfully.", 'success')
         return redirect(url_for('admin_dashboard'))
@@ -237,46 +241,21 @@ def add_lot():
     return render_template('add_lot.html')
 
 
-# Dummy Logout route (fix for your navbar link)
 @app.route('/logout')
 def logout():
     flash("Logged out successfully!", 'info')
     return redirect(url_for('login'))
 
-# Run the app
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
 
-        try:
-            with db.session.begin_nested():
-                if not User.query.filter_by(role='admin').first():
-                    admin = User(email="admin@app.com", password="admin123", role="admin")
-                    db.session.add(admin)
-                    print("✅ Default admin created!")
+        with db.session.begin_nested():
+            if not User.query.filter_by(role='admin').first():
+                admin = User(email="admin@app.com", password="admin123", role="admin")
+                db.session.add(admin)
+                print("✅ Default admin created!")
 
-                if not ParkingLot.query.first():
-                    lot1 = ParkingLot(id=101, prime_location_name="City Center", address="12 MG Road, Kolkata",
-                                      pin_code="700001", price_per_hour=50, available_spots=5)
-                    lot2 = ParkingLot(id=102, prime_location_name="Salt Lake Sector V", address="DLF IT Park, Kolkata",
-                                      pin_code="700091", price_per_hour=40, available_spots=3)
-                    lot3 = ParkingLot(id=103, prime_location_name="South City",
-                                      address="375 Prince Anwar Shah Road", pin_code="700068",
-                                      price_per_hour=60, available_spots=7)
-
-                    db.session.add_all([lot1, lot2, lot3])
-                    print("✅ Dummy parking lots seeded!")
-
-                    # Seed spots too
-                    db.session.add_all([ParkingSpot(lot_id=101, status='A') for _ in range(5)])
-                    db.session.add_all([ParkingSpot(lot_id=102, status='A') for _ in range(3)])
-                    db.session.add_all([ParkingSpot(lot_id=103, status='A') for _ in range(7)])
-                    print("✅ Dummy parking spots seeded!")
-
-            db.session.commit()
-
-        except Exception as e:
-            db.session.rollback()
-            print(f"Seeding error: {e}")
+        db.session.commit()
 
     app.run(debug=True)

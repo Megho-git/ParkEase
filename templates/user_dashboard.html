@@ -116,11 +116,34 @@
       padding: 16px;
       text-align: center;
     }
-
     .welcome-text {
       font-size: 22px;
       font-weight: 600;
       margin-right: 40px;
+    }
+    .release-btn {
+      background: var(--primary);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .release-btn:hover {
+      background: var(--primary-dark);
+    }
+    .search-btn {
+      background: var(--primary-dark);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .search-btn:hover {
+      background: var(--primary);
     }
 
   </style>
@@ -141,7 +164,11 @@
   <div class="container">
 
     <div class="card">
-      <h3>Recent Parking History</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>Recent Parking History</h3>
+      </div>
+
+
       <table>
         <tr>
           <th>Spot ID</th>
@@ -159,9 +186,7 @@
             <td>{% if not r.leaving_time %}Parked{% else %}Parked Out{% endif %}</td>
             <td>
               {% if not r.leaving_time %}
-                <a href="{{ url_for('release_spot', reservation_id=r.id) }}">
-                  <button type="button">Release</button>
-                </a>
+                <a href="{{ url_for('release_spot', reservation_id=r.id) }}" class="release-btn">Release</a>
               {% else %}
                 Parked Out
               {% endif %}
@@ -181,7 +206,7 @@
       <form method="GET" action="{{ url_for('search_parking') }}">
         <label for="lotSearch">Search by Pin Code or Address</label>
         <input type="text" id="lotSearch" name="location" placeholder="Enter location...">
-        <button type="submit">Search</button>
+        <button class="search-btn">Search</button>
       </form>
       {% if search_results is not none %}
         {% if results %}

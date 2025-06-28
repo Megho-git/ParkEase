@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy.orm import relationship
+from sqlalchemy import func
 
 db = SQLAlchemy()
 
@@ -21,17 +23,24 @@ class ParkingLot(db.Model):
     __tablename__ = 'parking_lots'
 
     id = db.Column(db.Integer, primary_key=True)
-    prime_location_name = db.Column(db.String(100), nullable=False)
-    address = db.Column(db.String(200), nullable=False)
-    pin_code = db.Column(db.String(10), nullable=False)
+    prime_location_name = db.Column(db.String(100))
+    address = db.Column(db.String(300))
+    pin_code = db.Column(db.String(10))
     price_per_hour = db.Column(db.Float, nullable=False)
-    available_spots = db.Column(db.Integer, default=0)
-    spots = db.relationship('ParkingSpot', backref='lot', lazy=True)
+    available_spots = db.Column(db.Integer)
+    spots = relationship("ParkingSpot", backref="lot", cascade="all, delete-orphan")
 
     @property
     def available_spots_count(self):
-        return ParkingSpot.query.filter_by(lot_id=self.id, status='A').count()
+        return len([spot for spot in self.spots if spot.status == 'A'])
 
+    @property
+    def occupied_spots_count(self):
+        return len([spot for spot in self.spots if spot.status == 'O'])
+
+    @property
+    def total_spots(self):
+        return len(self.spots)
 
 class ParkingSpot(db.Model):
     __tablename__ = 'parking_spots'
@@ -50,11 +59,3 @@ class Reservation(db.Model):
     vehicle_number = db.Column(db.String(20), nullable=False)
     parking_time = db.Column(db.DateTime, default=datetime.utcnow)
     leaving_time = db.Column(db.DateTime, nullable=True)
-
-class RecentBooking(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    location = db.Column(db.String(200), nullable=False)
-    vehicle_number = db.Column(db.String(20), nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
