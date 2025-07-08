@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Lot Confirmation</title>
+  <style>
+    :root {
+      --primary: #5e1f92;
+      --primary-dark: #47166f;
+      --primary-light: #a87edb;
+      --accent-bg: #dbc8f0;
+      --page-bg: #f4f1fa;
+      --text-color: #2e2e2e;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #f2e7fa, #dbc8f0, #f6e3fc);
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 80px auto;
+      background: white;
+      padding: 35px;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+    h2 {
+      color: var(--primary-dark);
+      margin-bottom: 16px;
+    }
+    p {
+      color: var(--text-color);
+      font-size: 17px;
+      margin-bottom: 28px;
+    }
+    .btn {
+      padding: 11px 22px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      margin: 0 10px;
+      font-size: 15px;
+      transition: all 0.2s ease;
+    }
+    .btn-delete {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-delete:hover {
+      background: var(--primary-dark);
+    }
+    .btn-cancel {
+      background: var(--accent-bg);
+      color: var(--primary-dark);
+    }
+    .btn-cancel:hover {
+      background: var(--primary-light);
+      color: white;
+    }
+    .error-message {
+      margin-top: 22px;
+      color: crimson;
+      font-weight: 500;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Confirm Deletion</h2>
+    <p>Are you sure you want to delete the parking lot for <strong>{{ lot.prime_location_name }}</strong>?</p>
+    <form method="POST">
+      <button type="submit" class="btn btn-delete">Delete</button>
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-cancel">Cancel</a>
+    </form>
+    {% if error_message %}
+      <div class="error-message">{{ error_message }}</div>
+    {% endif %}
+  </div>
+</body>
+</html>

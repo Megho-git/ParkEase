@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Summary</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+    :root {
+      --primary: #5e1f92;
+      --primary-dark: #47166f;
+      --primary-light: #a87edb;
+      --accent-bg: #dbc8f0;
+      --page-bg: #f4f1fa;
+      --text-color: #2e2e2e;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f1fa;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: var(--primary);
+      color: white;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .navbar a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .welcome-text {
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .summary-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 40px;
+      flex-wrap: wrap;
+    }
+    .chart-box {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      padding: 20px;
+      max-width: 450px;
+      flex: 1 1 380px;
+      text-align: center;
+    }
+    .chart-box canvas {
+      max-width: 420px;
+      max-height: 350px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      color: #5e1f92;
+      margin-bottom: 16px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="welcome-text">Summary</div>
+  <div>
+    <a href="{{ url_for('admin_dashboard') }}">Home</a>
+    <a href="{{ url_for('view_users') }}">Users</a>
+    <a href="{{ url_for('admin_summary') }}">Summary</a>
+    <a href="{{ url_for('admin_search') }}">Search</a>
+    <a href="{{ url_for('edit_profile_admin') }}">Edit Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </div>
+</div>
+
+<div class="summary-container">
+
+  <div class="chart-box">
+    <h2>Revenue by Parking Lot</h2>
+    <canvas id="revenueChart"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h2>Spot Status Summary</h2>
+    <canvas id="spotStatusChart"></canvas>
+  </div>
+
+</div>
+
+<script>
+  const revLabels = {{ lot_names|tojson }};
+  const revData = {{ revenue_values|tojson }};
+
+  const dynamicColors = () => {
+    const colors = [];
+    const step = 360 / revLabels.length;
+    for (let i = 0; i < revLabels.length; i++) {
+      const hue = Math.floor(i * step);
+      colors.push(`hsl(${hue}, 70%, 60%)`);
+    }
+    return colors;
+  };
+
+
+  const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+  new Chart(revenueCtx, {
+    type: 'pie',
+    data: {
+      labels: revLabels,
+      datasets: [{
+        data: revData,
+        backgroundColor: dynamicColors()
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        datalabels: {
+          color: 'white',
+          font: { weight: 'bold', size: 14 },
+          formatter: (value) => '₹' + value
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  const statusLabels = {{ status_labels|tojson }};
+  const availableData = {{ available_counts|tojson }};
+  const occupiedData = {{ occupied_counts|tojson }};
+
+  const spotStatusCtx = document.getElementById('spotStatusChart').getContext('2d');
+  new Chart(spotStatusCtx, {
+    type: 'bar',
+    data: {
+      labels: statusLabels,
+      datasets: [
+        {
+          label: 'Available',
+          data: availableData,
+          backgroundColor: '#4caf50'
+        },
+        {
+          label: 'Occupied',
+          data: occupiedData,
+          backgroundColor: '#f44336'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      aspectRatio: 1.5,
+      plugins: {
+        legend: { position: 'top' }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of Spots',
+            color: '#333',
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          }
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spot Details</title>
+  <style>
+    :root {
+      --primary: #5e1f92;
+      --primary-dark: #47166f;
+      --primary-light: #a87edb;
+      --accent-bg: #dbc8f0;
+      --page-bg: #f4f1fa;
+      --text-color: #2e2e2e;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: var(--page-bg);
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: var(--primary);
+      color: white;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .container {
+      max-width: 480px;
+      margin: 80px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h2 {
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+    }
+    .info {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    .info a {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+    .button-group {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+    .btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    }
+
+    .btn-delete {
+      background: var(--primary);
+    }
+    .btn-delete:hover {
+      background: var(--primary-dark);
+    }
+    .btn-cancel {
+      background: var(--primary);
+    }
+    .btn-cancel:hover {
+      background: var(--primary-dark);
+    }
+    .error-message {
+      color: #b30000;
+      margin-top: 20px;
+      font-weight: 500;
+    }
+    .status-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 6px;
+    }
+
+    .occupied-btn {
+    background: var(--primary);
+    color: white;
+    }
+
+    .occupied-btn:hover {
+    background: var(--primary-dark);
+    }
+
+    .available-btn {
+    background: #e0d4f0;
+    color: var(--primary-dark);
+    cursor: not-allowed;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <div><strong>Admin Panel</strong></div>
+</div>
+
+<div class="container">
+  <h2>Spot Details</h2>
+
+  <div class="info">Spot ID: {{ spot.id }}</div>
+  <div class="info">
+        Status:
+        {% if spot.status == 'O' %}
+            <form method="GET" action="{{ url_for('spot_details', spot_id=spot.id) }}" style="display:inline;">
+              <button type="submit" class="status-btn occupied-btn">Occupied</button>
+            </form>
+        {% else %}
+            <button class="status-btn available-btn" disabled>Available</button>
+        {% endif %}
+    </div>
+
+
+  <form method="POST" action="{{ url_for('delete_spot_final', spot_id=spot.id) }}">
+    <div class="button-group">
+      <button type="submit" class="btn btn-delete">Delete</button>
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-cancel">Cancel</a>
+    </div>
+  </form>
+
+  {% if error_message %}
+    <div class="error-message">{{ error_message }}</div>
+  {% endif %}
+
+</div>
+
+</body>
+</html>

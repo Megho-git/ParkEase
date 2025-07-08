@@ -68,6 +68,23 @@
     button:hover {
       background: var(--primary-dark);
     }
+    .button-link {
+      display: inline-block;
+      padding: 12px 20px;
+      background-color: #65249b;
+      color: white;
+      text-decoration: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .button-link:hover {
+      background-color: #491771;
+    }
+
   </style>
 </head>
 <body>
@@ -93,7 +110,7 @@
 
       <div class="button-group">
         <button type="submit">Add</button>
-        <a href="{{ url_for('admin_dashboard') }}" class="button">Cancel</a>
+        <a href="{{ url_for('admin_dashboard') }}" class="button-link">Cancel</a>
       </div>
     </form>
   </div>

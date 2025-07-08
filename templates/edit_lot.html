@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Parking Lot</title>
+  <style>
+    :root {
+      --primary: #5e1f92;
+      --primary-dark: #47166f;
+      --page-bg: #f4f1fa;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: var(--page-bg);
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: var(--primary);
+      color: white;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: var(--primary-dark);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    input, textarea {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      margin-bottom: 18px;
+      box-sizing: border-box;
+    }
+    label {
+      font-weight: 500;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    button, .cancel-btn {
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    button:hover, .cancel-btn:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <div style="font-size: 22px; font-weight: 600;">Admin Dashboard</div>
+  <div>
+    <a href="{{ url_for('admin_dashboard') }}">Menu</a>
+    <a href="{{ url_for('add_lot') }}">Add Lot</a>
+    <a href="{{ url_for('view_users') }}">Users</a>
+    <a href="{{ url_for('admin_search') }}">Search</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <h2>Edit Parking Lot</h2>
+  <form method="POST">
+    <label for="prime_location_name">Prime Location Name</label>
+    <input type="text" id="prime_location_name" name="prime_location_name" value="{{ lot.prime_location_name }}" required>
+
+    <label for="address">Address</label>
+    <textarea id="address" name="address" required>{{ lot.address }}</textarea>
+
+    <label for="pin_code">Pin Code</label>
+    <input type="text" id="pin_code" name="pin_code" value="{{ lot.pin_code }}" required>
+
+    <label for="price_per_hour">Price Per Hour (₹)</label>
+    <input type="number" id="price_per_hour" name="price_per_hour" value="{{ lot.price_per_hour }}" required>
+
+    <label for="available_spots">Maximum Number of Spots</label>
+    <input type="number" id="available_spots" name="available_spots" value="{{ lot.total_spots }}" required>
+
+    <div class="button-group">
+      <button type="submit">Update</button>
+      <a href="{{ url_for('admin_dashboard') }}">
+        <button type="button" class="cancel-btn">Cancel</button>
+      </a>
+    </div>
+  </form>
+    {% if error_message %}
+    <p style="color: red; text-align: center; margin-top: 20px;">{{ error_message }}</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

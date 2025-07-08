@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registered Users</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f4f1fa;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: #5e1f92;
+      color: white;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .welcome-text {
+      font-size: 22px;
+      font-weight: 600;
+    }
+    h2 {
+      color: #47166f;
+      padding: 20px 40px;
+    }
+    table {
+      width: 90%;
+      margin: 0 auto 40px;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 14px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #dbc8f0;
+      color: #47166f;
+    }
+    tr:hover {
+      background-color: #f2e7fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="welcome-text">Users</div>
+      <div>
+        <a href="{{ url_for('admin_dashboard') }}">Home</a>
+        <a href="{{ url_for('view_users') }}">Users</a>
+        <a href="{{ url_for('admin_summary') }}">Summary</a>
+        <a href="{{ url_for('admin_search') }}">Search</a>
+        <a href="{{ url_for('edit_profile_admin') }}">Edit Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </div>
+  </div>
+
+  <h2>Registered Users</h2>
+
+  <table>
+    <tr>
+      <th>User ID</th>
+      <th>Email</th>
+      <th>Full Name</th>
+      <th>Address</th>
+      <th>Pin Code</th>
+    </tr>
+    {% for user in users %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.fullname or '-' }}</td>
+        <td>{{ user.address or '-' }}</td>
+        <td>{{ user.pincode or '-' }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+</body>
+</html>
