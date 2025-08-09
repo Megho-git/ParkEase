@@ -1,0 +1,33 @@
+# Core Flask Framework
+Flask==2.3.3
+Werkzeug==2.3.7
+
+# Database and ORM
+SQLAlchemy==2.0.21
+Flask-SQLAlchemy==3.0.5
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Email Functionality
+secure-smtplib==0.1.1
+
+# QR Code Generation
+qrcode[pil]==7.4.2
+Pillow==10.0.1
+
+# Date and Time Handling
+python-dateutil==2.8.2
+
+# Math and Utilities (usually built-in, but good to specify)
+# These are typically included with Python standard library
+
+# Development and Testing (optional, but recommended)
+pytest==7.4.2
+pytest-flask==1.2.0
+
+# Security (recommended for production)
+cryptography==41.0.4
+
+# Additional utilities that might be useful
+requests==2.31.0
