@@ -154,3 +154,7 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+"instance/" 
+"__pycache__/" 
+"*.pyc" 
+".env/" 
