@@ -4,116 +4,306 @@
   <meta charset="UTF-8">
   <title>Add New Parking Lot</title>
   <style>
-    :root {
-      --primary: #5e1f92;
-      --primary-dark: #47166f;
-      --accent-bg: #dbc8f0;
-      --page-bg: #f4f1fa;
-      --text-color: #2e2e2e;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: var(--page-bg);
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
     .container {
-      max-width: 600px;
-      margin: 60px auto;
       background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--gray-100);
+      max-width: 600px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
     }
-    h2 {
-      color: var(--primary-dark);
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 2rem;
     }
+
+    .header-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    h2 {
+      color: var(--gray-800);
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--gray-600);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
     label {
       display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: var(--text-color);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
     }
+
     input[type="text"],
     input[type="number"],
     textarea {
       width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      font-size: 14px;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-size: 1rem;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      transition: all 0.3s ease;
+      font-family: inherit;
     }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      transform: translateY(-1px);
+    }
+
     textarea {
       resize: vertical;
-      height: 80px;
+      min-height: 80px;
+      font-family: inherit;
     }
+
     .button-group {
       display: flex;
-      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
     }
-    button {
-      padding: 12px 24px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: var(--primary-dark);
-    }
+
+    button,
     .button-link {
-      display: inline-block;
-      padding: 12px 20px;
-      background-color: #65249b;
-      color: white;
-      text-decoration: none;
+      flex: 1;
+      padding: 0.875rem 1.5rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
       text-align: center;
-      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: inherit;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .button-link {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border: 2px solid var(--gray-200);
     }
 
     .button-link:hover {
-      background-color: #491771;
+      background: var(--gray-200);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
     }
 
+    .input-icon {
+      position: relative;
+    }
+
+    .input-icon::before {
+      content: '📍';
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      z-index: 1;
+    }
+
+    .input-icon input {
+      padding-left: 2.5rem;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+        border-radius: 16px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Animation for form elements */
+    .form-group {
+      opacity: 0;
+      animation: slideUp 0.5s ease forwards;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.2s; }
+    .form-group:nth-child(3) { animation-delay: 0.3s; }
+    .form-group:nth-child(4) { animation-delay: 0.4s; }
+    .form-group:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h2>Add New Parking Lot</h2>
+    <div class="header">
+      <div class="header-icon">P+</div>
+      <h2>Add New Parking Lot</h2>
+      <p class="subtitle">Create a new parking location for your system</p>
+    </div>
 
     <form method="POST" action="#">
-      <label for="prime_location_name">Prime Location Name</label>
-      <input type="text" id="prime_location_name" name="prime_location_name" required>
+      <div class="form-group">
+        <label for="prime_location_name">Prime Location Name</label>
+        <input type="text" id="prime_location_name" name="prime_location_name" required placeholder="Enter location name">
+      </div>
 
-      <label for="address">Address</label>
-      <textarea id="address" name="address" required></textarea>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" name="address" required placeholder="Enter complete address"></textarea>
+      </div>
 
-      <label for="pin_code">Pin Code</label>
-      <input type="text" id="pin_code" name="pin_code" required>
+      <div class="form-group">
+        <label for="pin_code">Pin Code</label>
+        <input type="text" id="pin_code" name="pin_code" required placeholder="Enter pin code">
+      </div>
 
-      <label for="price_per_hour">Price Per Hour (₹)</label>
-      <input type="number" id="price_per_hour" name="price_per_hour" required>
+      <div class="form-group">
+        <label for="price_per_hour">Price Per Hour (₹)</label>
+        <input type="number" id="price_per_hour" name="price_per_hour" required placeholder="Enter hourly rate">
+      </div>
 
-      <label for="available_spots">Maximum Number of Spots</label>
-      <input type="number" id="available_spots" name="available_spots" required>
+      <div class="form-group">
+        <label for="available_spots">Maximum Number of Spots</label>
+        <input type="number" id="available_spots" name="available_spots" required placeholder="Enter total spots">
+      </div>
 
       <div class="button-group">
-        <button type="submit">Add</button>
-        <a href="{{ url_for('admin_dashboard') }}" class="button-link">Cancel</a>
+        <button type="submit">
+          ✓ Add Parking Lot
+        </button>
+        <a href="{{ url_for('admin_dashboard') }}" class="button-link">
+          ← Cancel
+        </a>
       </div>
     </form>
   </div>
-
 </body>
 </html>

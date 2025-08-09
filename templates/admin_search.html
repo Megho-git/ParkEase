@@ -2,163 +2,492 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Search - ParkEase</title>
   <style>
-    :root {
-      --primary: #5e1f92;
-      --primary-dark: #47166f;
-      --accent-bg: #dbc8f0;
-      --page-bg: #f4f1fa;
-      --text-color: #2e2e2e;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: var(--page-bg);
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+    }
+
     .navbar {
-      background: var(--primary);
-      color: white;
-      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .navbar a {
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      margin-right: 20px;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .welcome-text {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.025em;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.9);
       text-decoration: none;
       font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
     }
-    .navbar a:hover {
-      text-decoration: underline;
+
+    .nav-link:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
     }
-    .welcome-text {
-      font-size: 22px;
-      font-weight: 600;
+
+    .main-content {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    .search-bar {
+
+    .search-section {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-100);
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 1.5rem;
       display: flex;
-      justify-content: center;
       align-items: center;
-      gap: 10px;
-      padding: 30px;
+      gap: 0.75rem;
     }
-    input[type="text"], select {
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 250px;
+
+    .section-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1rem;
     }
-    button {
-      background: var(--primary);
+
+    .search-form {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input, .form-select {
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .btn-search {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
     }
-    button:hover {
-      background: var(--primary-dark);
+
+    .btn-search:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 30px;
-      padding: 30px;
-    }
-    .card {
+
+    .results-section {
       background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-100);
     }
-    h3 {
-      color: var(--primary-dark);
-      margin-bottom: 16px;
+
+    .user-info {
+      background: linear-gradient(135deg, var(--gray-50), white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--gray-200);
     }
-    .spot-grid {
+
+    .user-details {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
     }
-    .spot {
-      padding: 8px;
-      text-align: center;
-      border-radius: 6px;
+
+    .user-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .detail-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .detail-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .spots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .spot-card {
+      background: linear-gradient(145deg, #ffffff, #f8fafc);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spot-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--error), #dc2626);
+    }
+
+    .spot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .spot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .spot-id {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .spot-status {
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      color: var(--error);
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .spot-info {
+      margin-bottom: 1.5rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--gray-500);
       font-weight: 500;
     }
-    .A {
-      background: #d4edda;
-      color: #155724;
+
+    .info-value {
+      font-size: 0.875rem;
+      color: var(--gray-800);
+      font-weight: 600;
     }
-    .O {
-      background: #f8d7da;
-      color: #721c24;
-    }
-    .empty-message {
+
+    .btn-view-details {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
       text-align: center;
-      font-style: italic;
-      color: #888;
-      margin-top: 30px;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .btn-view-details:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray-500);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .search-form {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .spots-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .user-details {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="navbar">
-    <div class="welcome-text">Search Lots</div>
-    <div>
-        <a href="{{ url_for('admin_dashboard') }}">Home</a>
-        <a href="{{ url_for('view_users') }}">Users</a>
-        <a href="{{ url_for('admin_summary') }}">Summary</a>
-        <a href="{{ url_for('admin_search') }}">Search</a>
-        <a href="{{ url_for('edit_profile_admin') }}">Edit Profile</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </div>
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div class="navbar-logo">P</div>
+    <div class="welcome-text">Admin Search</div>
   </div>
+  <div class="navbar-nav">
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-link">Dashboard</a>
+    <a href="{{ url_for('view_users') }}" class="nav-link">Users</a>
+    <a href="{{ url_for('admin_summary') }}" class="nav-link">Analytics</a>
+    <a href="{{ url_for('admin_search') }}" class="nav-link">Search</a>
+    <a href="{{ url_for('edit_profile_admin') }}" class="nav-link">Profile</a>
+    <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+  </div>
+</nav>
 
-  <div class="search-bar">
-    <form method="GET" action="{{ url_for('admin_search') }}">
-      <input type="text" name="search_query" value="{{ query or '' }}" placeholder="Enter User ID or Location">
-      <select name="search_by">
-        <option value="">Search By (Optional)</option>
-        <option value="user_id" {% if search_by == 'user_id' %}selected{% endif %}>User ID</option>
-        <option value="location" {% if search_by == 'location' %}selected{% endif %}>Location</option>
-      </select>
-      <button type="submit">Search</button>
+<main class="main-content">
+  <div class="search-section">
+    <h2 class="section-title">
+      <div class="section-icon">🔍</div>
+      Search User Reservations
+    </h2>
+    
+    <form method="GET" class="search-form">
+      <div class="form-group">
+        <label class="form-label">Search Query</label>
+        <input 
+          type="text" 
+          name="search_query" 
+          class="form-input"
+          placeholder="Enter User ID or Name..."
+          value="{{ query }}"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Search By</label>
+        <select name="search_by" class="form-select">
+          <option value="" {% if not search_by %}selected{% endif %}>Auto Detect</option>
+          <option value="user_id" {% if search_by == 'user_id' %}selected{% endif %}>User ID</option>
+          <option value="username" {% if search_by == 'username' %}selected{% endif %}>Username</option>
+        </select>
+      </div>
+      
+      <button type="submit" class="btn-search">🔍 Search</button>
     </form>
   </div>
 
-  {% if lots %}
-    <div class="container">
-      {% for lot in lots %}
-        <div class="card">
-          <h3>{{ lot.prime_location_name }}</h3>
-          <div class="actions">    
-            <a href="{{ url_for('edit_lot', lot_id=lot.id) }}">Edit</a> | 
-            <a href="{{ url_for('delete_lot', lot_id=lot.id) }}">Delete</a>
+  <div class="results-section">
+    <h3 class="section-title">
+      <div class="section-icon">📊</div>
+      Search Results
+    </h3>
+
+    {% if user %}
+      <div class="user-info">
+        <h4 style="margin-bottom: 1rem; color: var(--gray-800); font-weight: 700;">👤 User Information</h4>
+        <div class="user-details">
+          <div class="user-detail">
+            <span class="detail-label">User ID</span>
+            <span class="detail-value">#{{ user.id }}</span>
           </div>
-          <br>
-          <div class="occupancy">Occupied: {{ lot.occupied_spots_count }}/{{ lot.total_spots }}</div>
-          <p><strong>Address:</strong> {{ lot.address }}</p>
-          <p><strong>Price/hr:</strong> ₹{{ lot.price_per_hour }}</p>
-          <div class="spot-grid">
-            {% for spot in lot.spots %}
-              <div class="spot {{ spot.status }}">{{ spot.status }}</div>
-            {% endfor %}
+          <div class="user-detail">
+            <span class="detail-label">Full Name</span>
+            <span class="detail-value">{{ user.fullname }}</span>
+          </div>
+          <div class="user-detail">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">{{ user.email }}</span>
+          </div>
+          <div class="user-detail">
+            <span class="detail-label">Active Reservations</span>
+            <span class="detail-value">{{ spots|length }}</span>
           </div>
         </div>
-      {% endfor %}
-    </div>
-  {% elif query %}
-    <p class="empty-message">No lot found matching that {{ 'user ID' if search_by == 'user_id' else 'location' if search_by == 'location' else 'user ID or location' }}.</p>
-  {% endif %}
+      </div>
+    {% endif %}
+
+    {% if spots %}
+      <div class="spots-grid">
+        {% for spot in spots %}
+          <div class="spot-card">
+            <div class="spot-header">
+              <div class="spot-id">Spot #{{ spot.id }}</div>
+              <div class="spot-status">🔴 Occupied</div>
+            </div>
+            
+            <div class="spot-info">
+              <div class="info-row">
+                <span class="info-label">Location</span>
+                <span class="info-value">{{ spot.lot.prime_location_name }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Vehicle Number</span>
+                <span class="info-value" style="font-family: monospace;">{{ spot.reservation.vehicle_number }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Check-in Time</span>
+                <span class="info-value">{{ spot.reservation.parking_time.strftime('%m/%d %H:%M') }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Reservation ID</span>
+                <span class="info-value">#{{ spot.reservation.id }}</span>
+              </div>
+            </div>
+            
+            <a href="{{ url_for('spot_details', spot_id=spot.id) }}" class="btn-view-details">
+              👁️ View Details
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% elif query %}
+      <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <h3 style="color: var(--gray-600); margin-bottom: 0.5rem;">No Active Reservations Found</h3>
+        <p style="color: var(--gray-500);">No active reservations found for "{{ query }}"</p>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-state-icon">👥</div>
+        <h3 style="color: var(--gray-600); margin-bottom: 0.5rem;">Search for User Reservations</h3>
+        <p style="color: var(--gray-500);">Enter a User ID or Name to find their active parking reservations</p>
+      </div>
+    {% endif %}
+  </div>
+</main>
 
 </body>
 </html>

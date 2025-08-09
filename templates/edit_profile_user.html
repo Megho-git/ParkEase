@@ -3,89 +3,708 @@
 <head>
   <title>Edit Profile (User)</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      padding: 2rem;
     }
-    .signup-box {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 320px;
+
+    .profile-container {
+      background: white;
+      padding: 3rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 450px;
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .profile-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .profile-header {
       text-align: center;
+      margin-bottom: 2rem;
     }
-    .signup-box h2 {
-      margin-bottom: 20px;
-      color: #333;
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--success), #059669);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+      position: relative;
     }
-    .signup-box input[type="text"],
-    .signup-box input[type="email"],
-    .signup-box input[type="password"] {
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .profile-avatar::before {
+      content: "👤";
+    }
+
+    .user-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border: 3px solid white;
+    }
+
+    .user-badge::before {
+      content: "U";
+    }
+
+    h2 {
+      color: var(--gray-800);
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.025em;
+    }
+
+    .profile-subtitle {
+      color: var(--gray-600);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .message-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .message {
+      padding: 1rem;
+      border-radius: 12px;
+      font-weight: 500;
+      text-align: center;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .success-message {
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+      color: #065f46;
+      border-left: 4px solid var(--success);
+    }
+
+    .error-message {
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      color: var(--error);
+      border-left: 4px solid var(--error);
+    }
+
+    .form-section {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--gray-700);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--gray-100);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: var(--success);
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    input {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      background: var(--gray-50);
+      color: var(--gray-800);
     }
-    .signup-box button {
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      transform: translateY(-1px);
+    }
+
+    input:hover {
+      border-color: var(--gray-300);
+      background: white;
+    }
+
+    input:disabled,
+    input.readonly-field {
+      background: linear-gradient(135deg, var(--gray-100), var(--gray-50));
+      cursor: not-allowed;
+      color: var(--gray-500);
+      border-color: var(--gray-300);
+    }
+
+    input.readonly-field:focus {
+      border-color: var(--gray-300);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      font-size: 1.25rem;
+      transition: all 0.3s ease;
+      z-index: 1;
+    }
+
+    input:focus + .input-icon {
+      color: var(--primary);
+    }
+
+    input.readonly-field + .input-icon {
+      color: var(--gray-400);
+    }
+
+    .readonly-label {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .password-section {
+      background: linear-gradient(135deg, var(--gray-50), white);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 2rem;
+    }
+
+    .password-section h3 {
+      color: var(--primary);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .password-section h3::before {
+      content: "🔐";
+    }
+
+    .btn {
       width: 100%;
-      padding: 10px;
-      background: #962edb;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--success), #059669);
       color: white;
       border: none;
-      border-radius: 5px;
-      font-size: 16px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
-      margin-top: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
     }
-    .signup-box button:hover {
-      background: #6a1791;
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
     }
-    .signup-box a {
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .cancel-link {
       display: block;
-      margin-top: 15px;
-      color: #5e1f92;
+      text-align: center;
+      color: var(--gray-600);
       text-decoration: none;
+      font-weight: 500;
+      padding: 0.75rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
     }
-    .error-message {
-      color: #b30000;
-      margin-top: 10px;
-      font-size: 14px;
+
+    .cancel-link:hover {
+      color: var(--primary);
+      background: var(--gray-50);
+      transform: translateY(-1px);
     }
-    .readonly-field {
-      background: #f7f7f7;
-      cursor: not-allowed;
+
+    .form-footer {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--gray-200);
+      color: var(--gray-500);
+      font-size: 0.875rem;
+    }
+
+    .account-info {
+      background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--primary);
+    }
+
+    .account-info-title {
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .account-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn.loading .spinner {
+      display: block;
+    }
+
+    .btn.loading .btn-text {
+      display: none;
+    }
+
+    .strength-meter {
+      margin-top: 0.5rem;
+      height: 4px;
+      background: var(--gray-200);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .strength-weak { background: var(--error); width: 25%; }
+    .strength-fair { background: var(--warning); width: 50%; }
+    .strength-good { background: var(--primary); width: 75%; }
+    .strength-strong { background: var(--success); width: 100%; }
+
+    @media (max-width: 480px) {
+      .profile-container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .profile-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+      }
+      
+      .account-info-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="signup-box">
-  <h2>Edit Profile (User)</h2>
-  <form method="POST">
-    <input type="text" name="user_id" value="{{ user.id }}" readonly class="readonly-field" placeholder="User ID">
-    <input type="text" name="role" value="{{ user.role }}" readonly class="readonly-field" placeholder="Role">
-    <input type="text" name="name" value="{{ user.name }}" required placeholder="Name">
-    <input type="email" name="email" value="{{ user.email }}" required placeholder="Email">
-    <h3 style="margin-top: 20px; margin-bottom: 10px; color: #5e1f92;">Change Password</h3>
-    <input type="password" name="new_password" placeholder="New Password">
-    <input type="password" name="confirm_password" placeholder="Confirm Password">
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <div class="user-badge"></div>
+    </div>
+    <h2>User Profile</h2>
+    <p class="profile-subtitle">Update your account information</p>
+  </div>
 
-    <button type="submit">Done</button>
-    <a href="{{ url_for('user_dashboard') }}">Cancel</a>
+  <div class="account-info">
+    <div class="account-info-title">📋 Account Details</div>
+    <div class="account-info-grid">
+      <div class="info-item">
+        <span>🆔</span>
+        <span>ID: {{ user.id }}</span>
+      </div>
+      <div class="info-item">
+        <span>👤</span>
+        <span>Role: {{ user.role }}</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="message-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="message {% if category == 'success' %}success-message{% else %}error-message{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+  
+  <form method="POST" id="profileForm">
+    <div class="form-section">
+      <div class="section-title">🔒 Account Information</div>
+      
+      <div class="input-group">
+        <div class="input-wrapper">
+          <input type="text" name="user_id" value="{{ user.id }}" readonly 
+                 class="readonly-field" placeholder="User ID">
+          <div class="input-icon">🆔</div>
+          <div class="readonly-label">Read Only</div>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <div class="input-wrapper">
+          <input type="text" name="role" value="{{ user.role }}" readonly 
+                 class="readonly-field" placeholder="Role">
+          <div class="input-icon">👔</div>
+          <div class="readonly-label">Read Only</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title">✏️ Editable Information</div>
+      
+      <div class="input-group">
+        <div class="input-wrapper">
+          <input type="text" name="name" value="{{ user.fullname }}" required 
+                 placeholder="Full Name" id="nameInput">
+          <div class="input-icon">👤</div>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <div class="input-wrapper">
+          <input type="email" name="email" value="{{ user.email }}" required 
+                 placeholder="Email Address" id="emailInput">
+          <div class="input-icon">📧</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="password-section">
+      <h3>Change Password</h3>
+      
+      <div class="input-group">
+        <div class="input-wrapper">
+          <input type="password" name="new_password" placeholder="New Password (optional)" 
+                 id="newPasswordInput">
+          <div class="input-icon">🔑</div>
+        </div>
+        <div class="strength-meter">
+          <div class="strength-bar" id="strengthBar"></div>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <div class="input-wrapper">
+          <input type="password" name="confirm_password" placeholder="Confirm Password" 
+                 id="confirmPasswordInput">
+          <div class="input-icon">🔐</div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn" id="updateBtn">
+      <div class="spinner"></div>
+      <span class="btn-text">💾 Update Profile</span>
+    </button>
+    
+    <a href="{{ url_for('user_dashboard') }}" class="cancel-link">↩️ Back to Dashboard</a>
   </form>
 
   {% if error_message %}
-  <div class="error-message">{{ error_message }}</div>
+    <div class="message error-message">{{ error_message }}</div>
   {% endif %}
+
+  <div class="form-footer">
+    <p>🔒 Your information is secure and encrypted</p>
+  </div>
 </div>
+
+<script>
+  document.getElementById('profileForm').addEventListener('submit', function(e) {
+    const updateBtn = document.getElementById('updateBtn');
+    const newPassword = document.getElementById('newPasswordInput').value;
+    const confirmPassword = document.getElementById('confirmPasswordInput').value;
+    
+    if (newPassword && newPassword !== confirmPassword) {
+      e.preventDefault();
+      alert('New password and confirmation password do not match!');
+      return;
+    }
+    
+    updateBtn.classList.add('loading');
+    updateBtn.disabled = true;
+  });
+
+  document.getElementById('newPasswordInput').addEventListener('input', function() {
+    const password = this.value;
+    const strengthBar = document.getElementById('strengthBar');
+    
+    if (!password) {
+      strengthBar.className = 'strength-bar';
+      return;
+    }
+    
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (password.match(/[a-z]/)) score++;
+    if (password.match(/[A-Z]/)) score++;
+    if (password.match(/[0-9]/)) score++;
+    if (password.match(/[^a-zA-Z0-9]/)) score++;
+    
+    strengthBar.className = 'strength-bar';
+    if (score >= 5) strengthBar.classList.add('strength-strong');
+    else if (score >= 4) strengthBar.classList.add('strength-good');
+    else if (score >= 3) strengthBar.classList.add('strength-fair');
+    else if (score >= 1) strengthBar.classList.add('strength-weak');
+  });
+
+  const inputs = document.querySelectorAll('input:not(.readonly-field)');
+  inputs.forEach(input => {
+    input.addEventListener('blur', function() {
+      if (this.checkValidity() && this.value.trim()) {
+        this.style.borderColor = 'var(--success)';
+        this.style.backgroundColor = '#f0fdf4';
+      } else if (!this.checkValidity() && this.value.trim()) {
+        this.style.borderColor = 'var(--error)';
+        this.style.backgroundColor = '#fef2f2';
+      }
+    });
+    
+    input.addEventListener('input', function() {
+      if (this.style.borderColor) {
+        this.style.borderColor = '';
+        this.style.backgroundColor = '';
+      }
+    });
+  });
+
+  document.getElementById('emailInput').addEventListener('input', function() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailRegex.test(this.value);
+    
+    if (this.value && !isValid) {
+      this.style.borderColor = 'var(--error)';
+    }
+  });
+
+  document.getElementById('nameInput').addEventListener('input', function() {
+    if (this.value.length > 0 && this.value.length < 2) {
+      this.style.borderColor = 'var(--error)';
+    }
+  });
+
+  document.getElementById('confirmPasswordInput').addEventListener('input', function() {
+    const newPassword = document.getElementById('newPasswordInput').value;
+    const confirmPassword = this.value;
+    
+    if (confirmPassword && newPassword !== confirmPassword) {
+      this.style.borderColor = 'var(--error)';
+      this.style.backgroundColor = '#fef2f2';
+    } else if (confirmPassword && newPassword === confirmPassword) {
+      this.style.borderColor = 'var(--success)';
+      this.style.backgroundColor = '#f0fdf4';
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      window.location.href = "{{ url_for('user_dashboard') }}";
+    }
+    if (e.ctrlKey && e.key === 's') {
+      e.preventDefault();
+      document.getElementById('profileForm').submit();
+    }
+  });
+
+  document.getElementById('nameInput').focus();
+
+  const passwordInputs = document.querySelectorAll('input[type="password"]');
+  passwordInputs.forEach(input => {
+    input.addEventListener('focus', function() {
+      this.parentNode.querySelector('.input-icon').style.color = 'var(--primary)';
+    });
+    
+    input.addEventListener('blur', function() {
+      this.parentNode.querySelector('.input-icon').style.color = '';
+    });
+  });
+
+  const messages = document.querySelectorAll('.message');
+  messages.forEach((message, index) => {
+    message.style.animationDelay = `${index * 0.1}s`;
+  });
+</script>
 
 </body>
 </html>

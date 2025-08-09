@@ -2,193 +2,647 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - ParkEase</title>
   <style>
-    :root {
-      --primary: #5e1f92;
-      --primary-dark: #47166f;
-      --primary-light: #a87edb;
-      --accent-bg: #dbc8f0;
-      --page-bg: #f4f1fa;
-      --text-color: #2e2e2e;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(135deg, #f2e7fa, #dbc8f0, #f6e3fc);
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+    }
+
     .navbar {
-      background: var(--primary);
-      color: white;
-      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .navbar a {
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      margin-right: 20px;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .welcome-text {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.025em;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.9);
       text-decoration: none;
       font-weight: 500;
-    }
-    .navbar a:hover {
-      text-decoration: underline;
-    }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 30px 50px;
-    }
-    .lot-card {
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-      padding: 20px;
-      width: 340px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      transition: transform 0.2s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
       overflow: hidden;
     }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-100);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .stat-icon.parking {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+
+    .stat-icon.revenue {
+      background: linear-gradient(135deg, var(--success), #059669);
+    }
+
+    .stat-icon.users {
+      background: linear-gradient(135deg, var(--accent), #db2777);
+    }
+
+    .stat-icon.spots {
+      background: linear-gradient(135deg, var(--warning), #d97706);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gray-800);
+      margin-bottom: 0.25rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .parking-lots-section {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-100);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gray-100);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .add-lot-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .add-lot-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .lots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .lot-card {
+      background: linear-gradient(145deg, #ffffff, #f8fafc);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lot-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .lot-card:hover::before {
+      transform: scaleX(1);
+    }
+
     .lot-card:hover {
       transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--primary-light);
     }
-    .lot-card h3 {
-      margin: 0 0 10px;
-      color: var(--primary-dark);
+
+    .lot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
     }
-    .lot-card .actions a {
+
+    .lot-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .lot-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
       color: var(--primary);
-      margin-right: 10px;
-      font-size: 14px;
       text-decoration: none;
-      font-weight: 500;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      background: rgba(99, 102, 241, 0.1);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
     }
-    .lot-card .actions a:hover {
-      text-decoration: underline;
+
+    .action-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-1px);
     }
-    .occupancy {
-      margin: 12px 0;
-      color: #444;
-      font-weight: 500;
+
+    .action-btn.delete {
+      color: var(--error);
+      background: rgba(239, 68, 68, 0.1);
     }
-    .spot-grid {
+
+    .action-btn.delete:hover {
+      background: var(--error);
+      color: white;
+    }
+
+    .occupancy-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background: var(--gray-50);
+      border-radius: 8px;
+    }
+
+    .occupancy-text {
+      font-weight: 600;
+      color: var(--gray-700);
+    }
+
+    .occupancy-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--gray-200);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .occupancy-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), var(--warning));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .spots-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-top: 14px;
+      gap: 0.5rem;
+      max-height: 120px;
+      overflow-y: auto;
+      padding: 0.5rem;
+      background: var(--gray-50);
+      border-radius: 8px;
     }
+
+    .spots-grid::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .spots-grid::-webkit-scrollbar-thumb {
+      background: var(--primary-light);
+      border-radius: 2px;
+    }
+
+    .spots-grid::-webkit-scrollbar-track {
+      background: var(--gray-200);
+      border-radius: 2px;
+    }
+
     .spot {
-      height: 40px;
-      padding: 0;
+      aspect-ratio: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 6px;
-      font-weight: bold;
-      font-size: 16px;
-      transition: all 0.2s ease;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
     }
+
     .spot.available {
-      background: #d0f0d4; 
-      color: #1b5e20;  
-      border: 1px solid #9ccc65;  
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
     }
 
     .spot.available:hover {
-      background: #a5d6a7; 
-      color: #0d3d0d;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
     }
 
     .spot.occupied {
-      background: #f9d6d5; 
-      color: #b71c1c;   
-      border: 1px solid #ef9a9a;  
+      background: linear-gradient(135deg, var(--error), #dc2626);
+      color: white;
     }
 
     .spot.occupied:hover {
-      background: #ef9a9a; 
-      color: #7f0000;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
     }
 
-    .add-lot-btn {
-      margin: 30px 50px;
-      display: inline-block;
-      background: var(--primary);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .add-lot-btn:hover {
-      background: var(--primary-dark);
-    }
-    .spot-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-top: 14px;
-      overflow-y: auto;
-      padding-right: 4px;
-      max-height: calc((40px + 8px) * 3);
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray-500);
     }
 
-    .spot-grid::-webkit-scrollbar {
-      width: 6px;
-    }
-    .spot-grid::-webkit-scrollbar-thumb {
-      background-color: var(--primary-light);
-      border-radius: 4px;
-    }
-    .spot-grid::-webkit-scrollbar-track {
-      background: #eee;
-      border-radius: 4px;
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
     }
 
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .navbar-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .lots-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .lot-header {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .spots-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
   </style>
 </head>
-
 <body>
-
-<div class="navbar">
-  <div class="welcome-text">Welcome Admin</div>
-  <div>
-    <a href="{{ url_for('admin_dashboard') }}">Home</a>
-    <a href="{{ url_for('view_users') }}">Users</a>
-    <a href="{{ url_for('admin_summary') }}">Summary</a>
-    <a href="{{ url_for('admin_search') }}">Search</a>
-    <a href="{{ url_for('edit_profile_admin') }}">Edit Profile</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
-  </div>
-</div>
-
-<div class="container">
-  {% for lot in parking_lots %}
-  <div class="lot-card">
-    <h3>Parking Location: {{ lot.prime_location_name }}</h3>
-    <div class="actions">    
-      <a href="{{ url_for('edit_lot', lot_id=lot.id) }}">Edit</a> | 
-      <a href="{{ url_for('delete_lot', lot_id=lot.id) }}">Delete</a>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-logo">P</div>
+      <div class="welcome-text">Admin Dashboard</div>
     </div>
-    <div class="occupancy">Occupied: {{ lot.occupied_spots_count }}/{{ lot.total_spots }}</div>
-    <div class="spot-grid">
-      {% for spot in lot.spots %}
-        {% if spot.status == 'O' %}
-          <a href="{{ url_for('delete_spot', spot_id=spot.id) }}" class="spot occupied">O</a>
+    <div class="navbar-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="nav-link">Dashboard</a>
+      <a href="{{ url_for('view_users') }}" class="nav-link">Users</a>
+      <a href="{{ url_for('admin_summary') }}" class="nav-link">Analytics</a>
+      <a href="{{ url_for('admin_search') }}" class="nav-link">Search</a>
+      <a href="{{ url_for('edit_profile_admin') }}" class="nav-link">Profile</a>
+      <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon parking">🅿️</div>
+        <div class="stat-value">{{ parking_lots|length or 0 }}</div>
+        <div class="stat-label">Parking Lots</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon spots">🚗</div>
+        <div class="stat-value">{{ total_spots or 0 }}</div>
+        <div class="stat-label">Total Spots</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon users">👥</div>
+        <div class="stat-value">{{ active_users or 0 }}</div>
+        <div class="stat-label">Active Users</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon revenue">💰</div>
+        <div class="stat-value">₹{{ total_revenue or 0 }}</div>
+        <div class="stat-label">Revenue</div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="parking-lots-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <div class="section-icon">🅿️</div>
+            Parking Lots Management
+          </h2>
+          <a href="{{ url_for('add_lot') }}" class="add-lot-btn">
+            ➕ Add New Lot
+          </a>
+        </div>
+
+        {% if parking_lots %}
+          <div class="lots-grid">
+            {% for lot in parking_lots %}
+              <div class="lot-card">
+                <div class="lot-header">
+                  <h3 class="lot-title">{{ lot.prime_location_name }}</h3>
+                  <div class="lot-actions">
+                    <a href="{{ url_for('edit_lot', lot_id=lot.id) }}" class="action-btn">Edit</a>
+                    <a href="{{ url_for('delete_lot', lot_id=lot.id) }}" class="action-btn delete">Delete</a>
+                  </div>
+                </div>
+
+                <div class="occupancy-info">
+                  <span class="occupancy-text">{{ lot.occupied_spots_count }}/{{ lot.total_spots }}</span>
+                  <div class="occupancy-bar">
+                    <div class="occupancy-fill" style="width: {{ (lot.occupied_spots_count / lot.total_spots * 100) if lot.total_spots > 0 else 0 }}%"></div>
+                  </div>
+                  <span style="font-size: 0.75rem; color: var(--gray-500);">
+                    {{ ((lot.occupied_spots_count / lot.total_spots * 100)|round(1)) if lot.total_spots > 0 else 0 }}%
+                  </span>
+                </div>
+
+                <div class="spots-grid">
+                  {% for spot in lot.spots %}
+                    {% if spot.status == 'O' %}
+                      <a href="{{ url_for('spot_details', spot_id=spot.id) }}" class="spot occupied">O</a>
+                    {% else %}
+                      <a href="{{ url_for('delete_spot', spot_id=spot.id) }}" class="spot available">A</a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
         {% else %}
-          <a href="{{ url_for('delete_spot', spot_id=spot.id) }}" class="spot available">A</a>
+          <div class="empty-state">
+            <div class="empty-state-icon">🅿️</div>
+            <h3 style="color: var(--gray-600); margin-bottom: 0.5rem;">No Parking Lots Yet</h3>
+            <p style="color: var(--gray-500); margin-bottom: 1.5rem;">Get started by adding your first parking lot</p>
+            <a href="{{ url_for('add_lot') }}" class="add-lot-btn">➕ Add Your First Lot</a>
+          </div>
         {% endif %}
-      {% endfor %}
+      </div>
     </div>
-  </div>
-  {% endfor %}
-</div>
+  </main>
 
-<a href="{{ url_for('add_lot') }}" class="add-lot-btn">+ Add Lot</a>
+  <script>
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'slideUp 0.6s ease-out forwards';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.stat-card, .lot-card').forEach(card => {
+      observer.observe(card);
+    });
+
+    document.querySelectorAll('.occupancy-fill').forEach(fill => {
+      const width = parseFloat(fill.style.width);
+      if (width > 80) {
+        fill.style.background = 'linear-gradient(90deg, var(--error), #dc2626)';
+      } else if (width > 60) {
+        fill.style.background = 'linear-gradient(90deg, var(--warning), #d97706)';
+      } else {
+        fill.style.background = 'linear-gradient(90deg, var(--success), #059669)';
+      }
+    });
+  </script>
+
+  <style>
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </body>
 </html>

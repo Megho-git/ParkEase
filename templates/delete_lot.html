@@ -2,85 +2,460 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Delete Lot Confirmation</title>
+  <title>Delete Lot Confirmation - ParkEase</title>
   <style>
-    :root {
-      --primary: #5e1f92;
-      --primary-dark: #47166f;
-      --primary-light: #a87edb;
-      --accent-bg: #dbc8f0;
-      --page-bg: #f4f1fa;
-      --text-color: #2e2e2e;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(135deg, #f2e7fa, #dbc8f0, #f6e3fc);
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
     .container {
-      max-width: 600px;
-      margin: 80px auto;
+      max-width: 500px;
+      width: 100%;
       background: white;
-      padding: 35px;
-      border-radius: 14px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      padding: 3rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow-xl);
       text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
     }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--error), var(--warning));
+    }
+
+    .warning-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--error), var(--warning));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+      }
+    }
+
+    .warning-icon::before {
+      content: "⚠️";
+    }
+
     h2 {
-      color: var(--primary-dark);
-      margin-bottom: 16px;
+      color: var(--error);
+      margin-bottom: 1.5rem;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
     }
+
     p {
-      color: var(--text-color);
-      font-size: 17px;
-      margin-bottom: 28px;
+      color: var(--gray-600);
+      font-size: 1.125rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
     }
-    .btn {
-      padding: 11px 22px;
-      border-radius: 7px;
-      text-decoration: none;
+
+    .location-name {
+      color: var(--primary);
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      background: linear-gradient(135deg, var(--primary-light), rgba(163, 230, 255, 0.2));
+      border-radius: 6px;
+      display: inline-block;
+      margin: 0 0.25rem;
+    }
+
+    .danger-zone {
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 2rem 0;
+      border: 1px solid #fecaca;
+    }
+
+    .danger-text {
+      color: var(--error);
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .consequences {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .consequences ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .consequences li {
+      padding: 0.5rem 0;
+      color: var(--gray-600);
+      position: relative;
+      padding-left: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .consequences li::before {
+      content: "•";
+      color: var(--error);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .lot-info {
+      background: linear-gradient(135deg, var(--gray-50), white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--gray-200);
+      text-align: left;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
       font-weight: 500;
+      color: var(--gray-500);
+      font-size: 0.875rem;
+    }
+
+    .info-value {
+      font-weight: 600;
+      color: var(--gray-800);
+      font-size: 0.875rem;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
       border: none;
       cursor: pointer;
-      margin: 0 10px;
-      font-size: 15px;
-      transition: all 0.2s ease;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 140px;
+      justify-content: center;
     }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
     .btn-delete {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--error), #dc2626);
       color: white;
+      box-shadow: var(--shadow-md);
     }
-    .btn-delete:hover {
-      background: var(--primary-dark);
+
+    .btn-delete:hover:not(:disabled) {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
+
     .btn-cancel {
-      background: var(--accent-bg);
-      color: var(--primary-dark);
+      background: white;
+      color: var(--gray-700);
+      border: 2px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
     }
+
     .btn-cancel:hover {
-      background: var(--primary-light);
-      color: white;
+      background: var(--gray-50);
+      border-color: var(--gray-300);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .loading .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 0.5rem;
+    }
+
+    .loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     .error-message {
-      margin-top: 22px;
-      color: crimson;
-      font-weight: 500;
-      font-size: 15px;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      color: var(--error);
+      font-weight: 600;
+      font-size: 0.875rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--error);
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+      
+      .button-group {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        min-width: auto;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      p {
+        font-size: 1rem;
+      }
+
+      .info-row {
+        flex-direction: column;
+        gap: 0.25rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="warning-icon"></div>
+    
     <h2>Confirm Deletion</h2>
-    <p>Are you sure you want to delete the parking lot for <strong>{{ lot.prime_location_name }}</strong>?</p>
-    <form method="POST">
-      <button type="submit" class="btn btn-delete">Delete</button>
-      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-cancel">Cancel</a>
+    
+    <p>
+      Are you sure you want to permanently delete the parking lot 
+      <span class="location-name">{{ lot.prime_location_name if lot else 'Unknown' }}</span>?
+    </p>
+
+    {% if lot %}
+    <div class="lot-info">
+      <div class="info-row">
+        <span class="info-label">Location Name</span>
+        <span class="info-value">{{ lot.prime_location_name }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Address</span>
+        <span class="info-value">{{ lot.address }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Total Spots</span>
+        <span class="info-value">{{ lot.total_spots }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Occupied Spots</span>
+        <span class="info-value">{{ lot.occupied_spots_count if lot.occupied_spots_count is defined else 0 }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Price per Hour</span>
+        <span class="info-value">₹{{ lot.price_per_hour }}</span>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="danger-zone">
+      <div class="danger-text">
+        <span>🚨</span>
+        This action cannot be undone!
+      </div>
+      <div class="consequences">
+        <strong style="color: var(--error); font-size: 0.875rem; margin-bottom: 0.5rem; display: block;">
+          Deleting this lot will:
+        </strong>
+        <ul>
+          <li>Permanently remove all parking spots</li>
+          <li>Delete all reservation history</li>
+          <li>Cancel any active reservations</li>
+          <li>Remove all related data from the system</li>
+        </ul>
+      </div>
+    </div>
+
+    <form method="POST" id="deleteForm">
+      <div class="button-group">
+        <button type="submit" class="btn btn-delete" id="deleteBtn">
+          <div class="spinner" style="display: none;"></div>
+          <span class="btn-text">🗑️ Yes, Delete Permanently</span>
+        </button>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-cancel">
+          ↩️ Cancel & Go Back
+        </a>
+      </div>
     </form>
+
     {% if error_message %}
       <div class="error-message">{{ error_message }}</div>
     {% endif %}
   </div>
+
+  <script>
+    document.getElementById('deleteForm').addEventListener('submit', function(e) {
+      const deleteBtn = document.getElementById('deleteBtn');
+      
+      const confirmed = confirm('⚠️ FINAL WARNING: This will permanently delete the parking lot and ALL associated data. This cannot be undone. Are you absolutely sure?');
+      if (!confirmed) {
+        e.preventDefault();
+        return;
+      }
+      
+      deleteBtn.classList.add('loading');
+      deleteBtn.disabled = true;
+      deleteBtn.querySelector('.spinner').style.display = 'inline-block';
+    });
+
+    // ESC key to cancel
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        window.location.href = "{{ url_for('admin_dashboard') }}";
+      }
+    });
+
+    // Auto-focus on cancel button for safety
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.btn-cancel').focus();
+    });
+  </script>
 </body>
 </html>

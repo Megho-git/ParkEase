@@ -2,153 +2,500 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spot Details</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    :root {
-      --primary: #5e1f92;
-      --primary-dark: #47166f;
-      --primary-light: #a87edb;
-      --accent-bg: #dbc8f0;
-      --page-bg: #f4f1fa;
-      --text-color: #2e2e2e;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: var(--page-bg);
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+    }
+
     .navbar {
-      background: var(--primary);
-      color: white;
-      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .navbar a {
-      color: white;
-      margin-right: 20px;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .container {
-      max-width: 480px;
-      margin: 80px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 14px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    h2 {
-      color: var(--primary-dark);
-      margin-bottom: 20px;
-    }
-    .info {
-      font-size: 18px;
-      margin: 10px 0;
-    }
-    .info a {
-      color: var(--primary-dark);
-      text-decoration: underline;
-    }
-    .button-group {
-      margin-top: 30px;
+
+    .navbar-brand {
       display: flex;
-      justify-content: center;
-      gap: 16px;
+      align-items: center;
+      gap: 1rem;
     }
+
+    .navbar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .welcome-text {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.025em;
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .header-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: white;
+      font-size: 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header h2 {
+      color: var(--gray-800);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-subtitle {
+      color: var(--gray-600);
+      font-size: 1rem;
+    }
+
+    .content {
+      padding: 2rem;
+    }
+
+    .info-grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-card {
+      background: var(--gray-50);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .info-label {
+      color: var(--gray-600);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-value {
+      color: var(--gray-900);
+      font-size: 1.125rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .status-occupied {
+      background: linear-gradient(135deg, var(--error), #dc2626);
+      color: white;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .status-occupied:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .status-available {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
     .btn {
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 16px;
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
     }
 
     .btn-delete {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--error), #dc2626);
+      color: white;
+      box-shadow: var(--shadow);
     }
+
     .btn-delete:hover {
-      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
+
     .btn-cancel {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--gray-100), var(--gray-200));
+      color: var(--gray-700);
+      border: 1px solid var(--gray-300);
+      box-shadow: var(--shadow);
     }
+
     .btn-cancel:hover {
-      background: var(--primary-dark);
+      background: linear-gradient(135deg, var(--gray-200), var(--gray-300));
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
+
     .error-message {
-      color: #b30000;
-      margin-top: 20px;
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      border: 1px solid #fecaca;
+      color: var(--error);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 1.5rem;
       font-weight: 500;
-    }
-    .status-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: slideIn 0.3s ease;
     }
 
-    .occupied-btn {
-    background: var(--primary);
-    color: white;
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .occupied-btn:hover {
-    background: var(--primary-dark);
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: -1;
     }
 
-    .available-btn {
-    background: #e0d4f0;
-    color: var(--primary-dark);
-    cursor: not-allowed;
+    .floating-element {
+      position: absolute;
+      background: linear-gradient(135deg, var(--primary-light), var(--accent));
+      border-radius: 50%;
+      opacity: 0.1;
+      animation: float 20s infinite linear;
     }
 
+    .floating-element:nth-child(1) {
+      width: 100px;
+      height: 100px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .floating-element:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      top: 60%;
+      right: 10%;
+      animation-delay: 5s;
+    }
+
+    .floating-element:nth-child(3) {
+      width: 80px;
+      height: 80px;
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-20px) rotate(120deg); }
+      66% { transform: translateY(20px) rotate(240deg); }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+      }
+
+      .container {
+        margin: 1rem;
+        border-radius: 16px;
+      }
+
+      .header, .content {
+        padding: 1.5rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="floating-elements">
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+  </div>
 
-<div class="navbar">
-  <div><strong>Admin Panel</strong></div>
-</div>
+  <div class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-logo">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      <div class="welcome-text">Admin Panel</div>
+    </div>
+  </div>
 
-<div class="container">
-  <h2>Spot Details</h2>
+  <div class="main-content">
+    <div class="container">
+      <div class="header">
+        <div class="header-icon">
+          <i class="fas fa-parking"></i>
+        </div>
+        <h2>Spot Details</h2>
+        <div class="header-subtitle">Manage parking spot information</div>
+      </div>
 
-  <div class="info">Spot ID: {{ spot.id }}</div>
-  <div class="info">
-        Status:
-        {% if spot.status == 'O' %}
-            <form method="GET" action="{{ url_for('spot_details', spot_id=spot.id) }}" style="display:inline;">
-              <button type="submit" class="status-btn occupied-btn">Occupied</button>
-            </form>
-        {% else %}
-            <button class="status-btn available-btn" disabled>Available</button>
+      <div class="content">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Spot ID</div>
+            <div class="info-value">
+              <i class="fas fa-hashtag"></i>
+              {{ spot.id }}
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-label">Current Status</div>
+            <div class="info-value">
+              {% if spot.status == 'O' %}
+                <form method="GET" action="{{ url_for('spot_details', spot_id=spot.id) }}" style="display:inline;">
+                  <button type="submit" class="status-indicator status-occupied">
+                    <span class="status-dot"></span>
+                    Occupied
+                    <i class="fas fa-sync-alt"></i>
+                  </button>
+                </form>
+              {% else %}
+                <div class="status-indicator status-available">
+                  <span class="status-dot"></span>
+                  Available
+                  <i class="fas fa-check"></i>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('delete_spot_final', spot_id=spot.id) }}">
+          <div class="button-group">
+            <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this spot? This action cannot be undone.')">
+              <i class="fas fa-trash-alt"></i>
+              Delete Spot
+            </button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-cancel">
+              <i class="fas fa-arrow-left"></i>
+              Back to Dashboard
+            </a>
+          </div>
+        </form>
+
+        {% if error_message %}
+          <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ error_message }}
+          </div>
         {% endif %}
+      </div>
     </div>
+  </div>
 
+  <script>
+    document.querySelectorAll('.info-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.borderColor = 'var(--primary-light)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.borderColor = 'var(--gray-200)';
+      });
+    });
 
-  <form method="POST" action="{{ url_for('delete_spot_final', spot_id=spot.id) }}">
-    <div class="button-group">
-      <button type="submit" class="btn btn-delete">Delete</button>
-      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-cancel">Cancel</a>
-    </div>
-  </form>
+    document.querySelector('.btn-delete').addEventListener('click', function(e) {
+      if (!confirm('⚠️ Delete Parking Spot\n\nAre you sure you want to permanently delete this parking spot?\n\nThis action cannot be undone and will remove all associated data.')) {
+        e.preventDefault();
+      }
+    });
 
-  {% if error_message %}
-    <div class="error-message">{{ error_message }}</div>
-  {% endif %}
-
-</div>
-
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function() {
+        const button = this.querySelector('button[type="submit"]');
+        if (button) {
+          const originalText = button.innerHTML;
+          button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+          button.disabled = true;
+          
+          setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+          }, 5000);
+        }
+      });
+    });
+  </script>
 </body>
 </html>

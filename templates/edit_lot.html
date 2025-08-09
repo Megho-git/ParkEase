@@ -2,127 +2,683 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Edit Parking Lot</title>
+  <title>Edit Parking Lot - ParkEase</title>
   <style>
-    :root {
-      --primary: #5e1f92;
-      --primary-dark: #47166f;
-      --page-bg: #f4f1fa;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: var(--page-bg);
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+    }
+
     .navbar {
-      background: var(--primary);
-      color: white;
-      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .navbar a {
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      margin-right: 20px;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .welcome-text {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.025em;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.9);
       text-decoration: none;
       font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .navbar a:hover {
-      text-decoration: underline;
-    }
-    .container {
-      max-width: 600px;
-      margin: 60px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    }
-    h2 {
-      color: var(--primary-dark);
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    input, textarea {
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
       width: 100%;
-      margin-bottom: 18px;
-      box-sizing: border-box;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
     }
-    label {
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .container {
+      background: white;
+      padding: 3rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .form-icon::before {
+      content: "✏️";
+    }
+
+    h2 {
+      color: var(--gray-800);
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .form-subtitle {
+      color: var(--gray-600);
+      font-size: 0.875rem;
       font-weight: 500;
-      margin-bottom: 5px;
+    }
+
+    .form-progress {
+      background: var(--gray-200);
+      height: 4px;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .form-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 0.875rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      padding-right: 3rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-size: 1rem;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      transition: all 0.3s ease;
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .success-indicator {
+      display: none;
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--success);
+      font-size: 1.25rem;
+      z-index: 10;
+    }
+
+    .input-wrapper.valid .success-indicator {
       display: block;
     }
+
+    .input-wrapper.valid input,
+    .input-wrapper.valid textarea {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    .field-hint {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
     .button-group {
       display: flex;
-      justify-content: space-between;
-      gap: 12px;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
     }
-    button, .cancel-btn {
-      background: var(--primary);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
+
+    .btn {
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
       text-decoration: none;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 140px;
+      justify-content: center;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--primary-dark), #3730a3);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--gray-700);
+      border: 2px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-300);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .loading .spinner {
       display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 0.5rem;
+    }
+
+    .loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      margin-top: 2rem;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      color: var(--error);
+      font-weight: 600;
+      border-radius: 12px;
+      border-left: 4px solid var(--error);
+      animation: shake 0.5s ease-in-out;
       text-align: center;
     }
-    button:hover, .cancel-btn:hover {
-      background: var(--primary-dark);
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .flash-messages {
+      margin-bottom: 1.5rem;
+    }
+
+    .flash-message {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      border-left: 4px solid;
+    }
+
+    .flash-message.success {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      color: var(--success);
+      border-left-color: var(--success);
+    }
+
+    .flash-message.error {
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      color: var(--error);
+      border-left-color: var(--error);
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+      }
+      
+      .container {
+        padding: 2rem;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .button-group {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        min-width: auto;
+      }
+      
+      h2 {
+        font-size: 1.75rem;
+      }
+
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .navbar-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
 
 <div class="navbar">
-  <div style="font-size: 22px; font-weight: 600;">Admin Dashboard</div>
-  <div>
-    <a href="{{ url_for('admin_dashboard') }}">Menu</a>
-    <a href="{{ url_for('add_lot') }}">Add Lot</a>
-    <a href="{{ url_for('view_users') }}">Users</a>
-    <a href="{{ url_for('admin_search') }}">Search</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
+  <div class="navbar-brand">
+    <div class="navbar-logo">P</div>
+    <div class="welcome-text">Admin Dashboard</div>
+  </div>
+  <div class="navbar-nav">
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-link">Dashboard</a>
+    <a href="{{ url_for('add_lot') }}" class="nav-link">Add Lot</a>
+    <a href="{{ url_for('view_users') }}" class="nav-link">Users</a>
+    <a href="{{ url_for('admin_search') }}" class="nav-link">Search</a>
+    <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
   </div>
 </div>
 
-<div class="container">
-  <h2>Edit Parking Lot</h2>
-  <form method="POST">
-    <label for="prime_location_name">Prime Location Name</label>
-    <input type="text" id="prime_location_name" name="prime_location_name" value="{{ lot.prime_location_name }}" required>
+<div class="main-content">
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash-message {{ 'success' if category == 'success' else 'error' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
-    <label for="address">Address</label>
-    <textarea id="address" name="address" required>{{ lot.address }}</textarea>
-
-    <label for="pin_code">Pin Code</label>
-    <input type="text" id="pin_code" name="pin_code" value="{{ lot.pin_code }}" required>
-
-    <label for="price_per_hour">Price Per Hour (₹)</label>
-    <input type="number" id="price_per_hour" name="price_per_hour" value="{{ lot.price_per_hour }}" required>
-
-    <label for="available_spots">Maximum Number of Spots</label>
-    <input type="number" id="available_spots" name="available_spots" value="{{ lot.total_spots }}" required>
-
-    <div class="button-group">
-      <button type="submit">Update</button>
-      <a href="{{ url_for('admin_dashboard') }}">
-        <button type="button" class="cancel-btn">Cancel</button>
-      </a>
+    <div class="form-header">
+      <div class="form-icon"></div>
+      <h2>Edit Parking Lot</h2>
+      <p class="form-subtitle">Update parking lot information and settings</p>
     </div>
-  </form>
+
+    <div class="form-progress">
+      <div class="form-progress-bar" style="width: 0%"></div>
+    </div>
+
+    <form method="POST" id="editForm">
+      <div class="form-group">
+        <label for="prime_location_name">📍 Prime Location Name</label>
+        <div class="input-wrapper">
+          <input type="text" id="prime_location_name" name="prime_location_name" 
+                 value="{{ lot.prime_location_name if lot else '' }}" required 
+                 placeholder="Enter location name">
+          <div class="input-icon">🏢</div>
+          <div class="success-indicator">✓</div>
+        </div>
+        <div class="field-hint">This will be displayed to users when searching for parking</div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">📮 Full Address</label>
+        <div class="input-wrapper">
+          <textarea id="address" name="address" required 
+                    placeholder="Enter complete address with landmarks">{{ lot.address if lot else '' }}</textarea>
+          <div class="success-indicator">✓</div>
+        </div>
+        <div class="field-hint">Include nearby landmarks for easier navigation</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pin_code">📮 Pin Code</label>
+          <div class="input-wrapper">
+            <input type="text" id="pin_code" name="pin_code" 
+                   value="{{ lot.pin_code if lot else '' }}" required 
+                   placeholder="Enter 6-digit PIN" 
+                   pattern="[0-9]{6}" maxlength="6">
+            <div class="input-icon">📍</div>
+            <div class="success-indicator">✓</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="price_per_hour">💰 Price Per Hour</label>
+          <div class="input-wrapper">
+            <input type="number" id="price_per_hour" name="price_per_hour" 
+                   value="{{ lot.price_per_hour if lot else '' }}" required min="1" 
+                   placeholder="Price in ₹">
+            <div class="input-icon">₹</div>
+            <div class="success-indicator">✓</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="available_spots">🚗 Maximum Number of Spots</label>
+        <div class="input-wrapper">
+          <input type="number" id="available_spots" name="available_spots" 
+                 value="{{ lot.total_spots if lot else '' }}" required min="1" 
+                 placeholder="Total parking capacity">
+          <div class="input-icon">🅿️</div>
+          <div class="success-indicator">✓</div>
+        </div>
+        <div class="field-hint">This determines the total parking capacity of your lot</div>
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary" id="updateBtn">
+          <div class="spinner" style="display: none;"></div>
+          <span class="btn-text">💾 Update Parking Lot</span>
+        </button>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+          ↩️ Cancel Changes
+        </a>
+      </div>
+    </form>
+
     {% if error_message %}
-    <p style="color: red; text-align: center; margin-top: 20px;">{{ error_message }}</p>
+      <div class="error-message">{{ error_message }}</div>
     {% endif %}
+  </div>
 </div>
+
+<script>
+  const form = document.getElementById('editForm');
+  const inputs = form.querySelectorAll('input, textarea');
+  
+  // Initialize validation on page load
+  inputs.forEach(input => {
+    if (input.value.trim() && input.checkValidity()) {
+      input.closest('.input-wrapper').classList.add('valid');
+    }
+    
+    // Add input event listener
+    input.addEventListener('input', function() {
+      const wrapper = this.closest('.input-wrapper');
+      
+      if (this.checkValidity() && this.value.trim()) {
+        wrapper.classList.add('valid');
+      } else {
+        wrapper.classList.remove('valid');
+      }
+      
+      updateFormProgress();
+    });
+    
+    // Add blur event listener
+    input.addEventListener('blur', function() {
+      if (this.checkValidity() && this.value.trim()) {
+        this.closest('.input-wrapper').classList.add('valid');
+      }
+    });
+  });
+
+  // PIN code validation
+  document.getElementById('pin_code').addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if (this.value.length > 6) {
+      this.value = this.value.slice(0, 6);
+    }
+  });
+
+  // Price validation
+  document.getElementById('price_per_hour').addEventListener('input', function(e) {
+    if (this.value < 0) this.value = 0;
+    if (this.value > 10000) this.value = 10000;
+  });
+
+  // Spots validation
+  document.getElementById('available_spots').addEventListener('input', function(e) {
+    if (this.value < 1) this.value = 1;
+    if (this.value > 1000) this.value = 1000;
+  });
+
+  function updateFormProgress() {
+    const totalFields = inputs.length;
+    const validFields = document.querySelectorAll('.input-wrapper.valid').length;
+    const progress = (validFields / totalFields) * 100;
+    
+    document.querySelector('.form-progress-bar').style.width = progress + '%';
+  }
+
+  // Form submission
+  form.addEventListener('submit', function(e) {
+    const updateBtn = document.getElementById('updateBtn');
+    updateBtn.classList.add('loading');
+    updateBtn.disabled = true;
+    updateBtn.querySelector('.spinner').style.display = 'inline-block';
+  });
+
+  // Initialize progress bar
+  updateFormProgress();
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      window.location.href = "{{ url_for('admin_dashboard') }}";
+    }
+    if (e.ctrlKey && e.key === 's') {
+      e.preventDefault();
+      form.submit();
+    }
+  });
+</script>
 
 </body>
 </html>

@@ -3,95 +3,531 @@
 <head>
   <meta charset="UTF-8">
   <title>Registered Users</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f4f1fa;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .navbar {
-      background: #5e1f92;
-      color: white;
-      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .navbar a {
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      margin-right: 20px;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .welcome-text {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.025em;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.9);
       text-decoration: none;
       font-weight: 500;
-    }
-    .navbar a:hover {
-      text-decoration: underline;
-    }
-    .welcome-text {
-      font-size: 22px;
-      font-weight: 600;
-    }
-    h2 {
-      color: #47166f;
-      padding: 20px 40px;
-    }
-    table {
-      width: 90%;
-      margin: 0 auto 40px;
-      border-collapse: collapse;
-      background: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-radius: 10px;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
       overflow: hidden;
     }
-    th, td {
-      padding: 14px 20px;
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .page-header {
       text-align: center;
-      border-bottom: 1px solid #ddd;
+      margin-bottom: 2rem;
+      animation: slideDown 0.8s ease-out;
     }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--gray-600);
+      font-size: 1.125rem;
+      font-weight: 500;
+    }
+
+    .search-container {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: slideUp 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .search-box {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: white;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .search-btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .table-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: slideUp 0.8s ease-out 0.4s both;
+    }
+
+    .stats-row {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    .user-count {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: transparent;
+    }
+
     th {
-      background-color: #dbc8f0;
-      color: #47166f;
+      background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+      color: var(--gray-800);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid var(--gray-200);
     }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-100);
+      color: var(--gray-700);
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    tr {
+      transition: all 0.3s ease;
+      animation: fadeInRow 0.6s ease-out;
+    }
+
+    @keyframes fadeInRow {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
     tr:hover {
-      background-color: #f2e7fa;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));
+      transform: scale(1.01);
+    }
+
+    tr:hover td {
+      color: var(--gray-900);
+    }
+
+    .user-id {
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(99, 102, 241, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .email-cell {
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.875rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--gray-500);
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--gray-200);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 1024px) {
+      table {
+        font-size: 0.875rem;
+      }
+      
+      th, td {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .navbar-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .page-title {
+        font-size: 1.875rem;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-input, .search-btn {
+        width: 100%;
+      }
+
+      .stats-row {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+
+      table {
+        font-size: 0.75rem;
+      }
+
+      th, td {
+        padding: 0.5rem 0.25rem;
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="navbar">
-    <div class="welcome-text">Users</div>
-      <div>
-        <a href="{{ url_for('admin_dashboard') }}">Home</a>
-        <a href="{{ url_for('view_users') }}">Users</a>
-        <a href="{{ url_for('admin_summary') }}">Summary</a>
-        <a href="{{ url_for('admin_search') }}">Search</a>
-        <a href="{{ url_for('edit_profile_admin') }}">Edit Profile</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
-      </div>
+<div class="navbar">
+  <div class="navbar-brand">
+    <div class="navbar-logo">A</div>
+    <div class="welcome-text">Admin Panel</div>
+  </div>
+  <div class="navbar-nav">
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-link">Home</a>
+    <a href="{{ url_for('view_users') }}" class="nav-link">Users</a>
+    <a href="{{ url_for('admin_summary') }}" class="nav-link">Summary</a>
+    <a href="{{ url_for('admin_search') }}" class="nav-link">Search</a>
+    <a href="{{ url_for('edit_profile_admin') }}" class="nav-link">Edit Profile</a>
+    <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1 class="page-title">User Management</h1>
+    <p class="page-subtitle">View and manage all registered users in the system</p>
   </div>
 
-  <h2>Registered Users</h2>
+  <div class="search-container">
+    <div class="search-box">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search by name, email, or ID..." 
+        id="searchInput"
+        oninput="filterUsers()"
+      >
+      <button class="search-btn" onclick="clearSearch()">Clear</button>
+    </div>
+  </div>
 
-  <table>
-    <tr>
-      <th>User ID</th>
-      <th>Email</th>
-      <th>Full Name</th>
-      <th>Address</th>
-      <th>Pin Code</th>
-    </tr>
-    {% for user in users %}
-      <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.fullname or '-' }}</td>
-        <td>{{ user.address or '-' }}</td>
-        <td>{{ user.pincode or '-' }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+  <div class="table-container">
+    <div class="stats-row">
+      <div>
+        <span>Total Registered Users</span>
+      </div>
+      <div class="user-count" id="userCount">{{ users|length }}</div>
+    </div>
 
+    {% if users %}
+    <table id="usersTable">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Email Address</th>
+          <th>Full Name</th>
+          <th>Address</th>
+          <th>Pin Code</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        {% for user in users %}
+          <tr class="user-row">
+            <td><span class="user-id">{{ user.id }}</span></td>
+            <td class="email-cell">{{ user.email }}</td>
+            <td>{{ user.fullname or '-' }}</td>
+            <td>{{ user.address or '-' }}</td>
+            <td>{{ user.pincode or '-' }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">👥</div>
+      <h3>No Users Found</h3>
+      <p>There are currently no registered users in the system.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  let allUsers = [];
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('.user-row');
+    allUsers = Array.from(rows).map(row => ({
+      element: row,
+      id: row.cells[0].textContent.trim(),
+      email: row.cells[1].textContent.trim(),
+      name: row.cells[2].textContent.trim(),
+      address: row.cells[3].textContent.trim(),
+      pincode: row.cells[4].textContent.trim()
+    }));
+    
+    rows.forEach((row, index) => {
+      row.style.animationDelay = `${index * 0.1}s`;
+    });
+  });
+
+  function filterUsers() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    let visibleCount = 0;
+
+    allUsers.forEach(user => {
+      const matchesSearch = 
+        user.id.toLowerCase().includes(searchTerm) ||
+        user.email.toLowerCase().includes(searchTerm) ||
+        user.name.toLowerCase().includes(searchTerm) ||
+        user.address.toLowerCase().includes(searchTerm) ||
+        user.pincode.toLowerCase().includes(searchTerm);
+
+      if (matchesSearch) {
+        user.element.style.display = '';
+        visibleCount++;
+      } else {
+        user.element.style.display = 'none';
+      }
+    });
+
+    document.getElementById('userCount').textContent = visibleCount;
+  }
+
+  function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    filterUsers();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const table = document.getElementById('usersTable');
+    if (table) {
+      table.addEventListener('click', function(e) {
+        if (e.target.closest('tr')) {
+          const row = e.target.closest('tr');
+          if (row.classList.contains('user-row')) {
+            row.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+              row.style.transform = 'scale(1.01)';
+            }, 100);
+            setTimeout(() => {
+              row.style.transform = '';
+            }, 200);
+          }
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>

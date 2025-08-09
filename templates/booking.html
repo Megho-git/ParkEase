@@ -4,103 +4,765 @@
   <meta charset="UTF-8">
   <title>Reserve Parking Spot</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     :root {
-      --primary: #962edb;
-      --primary-dark: #6a1791;
-      --page-bg: linear-gradient(135deg, #f4f1fa, #e9dcf5);
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: var(--page-bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
       display: flex;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
+      justify-content: center;
+      padding: 2rem;
     }
 
-    .booking-box {
-      background: #fff;
-      padding: 30px 50px;
+    .booking-container {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--gray-100);
+      max-width: 600px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .booking-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--success), #059669);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    h2 {
+      color: var(--gray-800);
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--gray-600);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .flash-messages {
+      margin-bottom: 1.5rem;
+    }
+
+    .flash-message {
+      padding: 1rem;
       border-radius: 12px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
-      width: 450px;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      border: 1px solid;
+    }
+
+    .flash-message.error {
+      background: #fef2f2;
+      color: var(--error);
+      border-color: #fecaca;
+    }
+
+    .flash-message.success {
+      background: #f0fdf4;
+      color: var(--success);
+      border-color: #bbf7d0;
+    }
+
+    .lot-info {
+      background: linear-gradient(135deg, var(--gray-50), #f8fafc);
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--gray-200);
+      position: relative;
+    }
+
+    .lot-info::before {
+      content: '📍';
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      opacity: 0.3;
+    }
+
+    .lot-info h3 {
+      color: var(--gray-800);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lot-info p {
+      margin-bottom: 0.5rem;
+      color: var(--gray-600);
+      font-size: 0.875rem;
+    }
+
+    .lot-info strong {
+      color: var(--gray-800);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .info-item {
+      text-align: center;
+      padding: 0.75rem;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .info-value {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="date"]::placeholder,
+    input[type="time"]::placeholder {
+      color: var(--gray-400);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    input[type="text"]:focus::placeholder,
+    input[type="date"]:focus::placeholder,
+    input[type="time"]:focus::placeholder {
+      color: var(--gray-300);
+      transition: color 0.3s ease;
+    }
+
+    /* Enhanced datetime helper styling */
+    .datetime-helper {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      border: 1px solid var(--success);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      position: relative;
+    }
+
+    .datetime-helper::before {
+      content: '💡';
+      margin-right: 0.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    input[type="number"] {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-size: 1rem;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="time"]:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .readonly-field {
+      background: var(--gray-100) !important;
+      cursor: not-allowed;
+      color: var(--gray-600);
+    }
+
+    .datetime-inputs {
+      position: relative;
+    }
+
+    .datetime-helper {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      border: 1px solid var(--success);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      position: relative;
+    }
+
+    .datetime-helper::before {
+      content: '💡';
+      margin-right: 0.5rem;
+    }
+
+    .quick-time-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .quick-time-btn {
+      padding: 0.25rem 0.75rem;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border: 1px solid var(--gray-300);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .quick-time-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .quick-time-btn:last-child {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      color: white;
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .quick-time-btn:last-child:hover {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+
+    .notice {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+      border: 1px solid var(--primary-light);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      color: var(--gray-700);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .notice::before {
+      content: 'ℹ️';
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1rem;
+    }
+
+    .cost-estimate {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+      border: 1px solid var(--warning);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
       text-align: center;
     }
 
-    .booking-box h2 {
-      margin-bottom: 20px;
-      color: var(--primary-dark);
+    .cost-estimate h4 {
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
     }
 
-    .booking-box input[type="text"],
-    .booking-box input[type="number"] {
-      width: 100%;
-      padding: 12px;
-      margin: 12px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: #f9f7fc;
+    .cost-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--warning);
     }
 
-    .booking-box button {
-      width: 48%;
-      padding: 12px;
-      background: var(--primary);
-      color: white;
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    button,
+    .button-link {
+      flex: 1;
+      padding: 0.875rem 1.5rem;
       border: none;
-      border-radius: 6px;
-      font-size: 16px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
-      margin-top: 12px;
-    }
-
-    .booking-box button:hover {
-      background: var(--primary-dark);
-    }
-
-    .booking-box .cancel-btn {
-      background: #bbb;
-    }
-
-    .booking-box .cancel-btn:hover {
-      background: #999;
-    }
-
-    a {
+      transition: all 0.3s ease;
       text-decoration: none;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: inherit;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      background: var(--gray-300);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .button-link {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border: 2px solid var(--gray-200);
+    }
+
+    .button-link:hover {
+      background: var(--gray-200);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+
+      .booking-container {
+        padding: 1.5rem;
+        border-radius: 16px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-time-buttons {
+        justify-content: center;
+      }
+    }
+
+    /* Animation for form elements */
+    .form-group,
+    .lot-info {
+      opacity: 0;
+      animation: slideUp 0.5s ease forwards;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.2s; }
+    .form-group:nth-child(3) { animation-delay: 0.3s; }
+    .form-group:nth-child(4) { animation-delay: 0.4s; }
+    .form-group:nth-child(5) { animation-delay: 0.5s; }
+    .form-group:nth-child(6) { animation-delay: 0.6s; }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="booking-box">
-    <h2>Reserve Your Spot</h2>
+  <div class="booking-container">
+    <div class="header">
+      <div class="header-icon">🚗</div>
+      <h2>Reserve Your Spot</h2>
+      <p class="subtitle">Schedule your parking with precise timing</p>
+    </div>
 
-    <form method="POST" action="{{ url_for('book_spot', lot_id=lot_id, user_id=user_id) }}">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash-message {% if category == 'success' %}success{% else %}error{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
-      <label>User ID</label>
-      <input type="text" name="user_id" value="{{ user_id }}" readonly>
+    {% if lot %}
+    <div class="lot-info">
+      <h3>{{ lot.prime_location_name }}</h3>
+      <p><strong>Address:</strong> {{ lot.address }}, {{ lot.pin_code }}</p>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-value">₹{{ lot.price_per_hour }}</div>
+          <div class="info-label">Per Hour</div>
+        </div>
+        <div class="info-item">
+          <div class="info-value">{{ lot.available_spots_count }}</div>
+          <div class="info-label">Available</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
-      <label>Lot ID</label>
-      <input type="text" name="lot_id" value="{{ lot_id }}" readonly>
+    <form method="POST" action="{{ url_for('book_spot', lot_id=lot_id, user_id=user_id) }}" id="bookingForm">
+      <div class="form-group">
+        <label for="user_id">User ID</label>
+        <input type="text" id="user_id" name="user_id" value="{{ user_id }}" readonly class="readonly-field">
+      </div>
 
-      <label>Spot ID</label>
-      <input type="text" name="spot_id" value="{{ spot_id }}" readonly>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="lot_id">Lot ID</label>
+          <input type="text" id="lot_id" name="lot_id" value="{{ lot_id }}" readonly class="readonly-field">
+        </div>
 
-      <label>Vehicle Number</label>
-      <input type="text" name="vehicle_number" required>
+        <div class="form-group">
+          <label for="spot_id">Spot ID</label>
+          <input type="text" id="spot_id" name="spot_id" value="{{ spot_id }}" readonly class="readonly-field">
+        </div>
+      </div>
 
-      <button type="submit">Reserve</button>
-      <a href="{{ url_for('user_dashboard') }}">
-        <button type="button" class="cancel-btn">Cancel</button>
-      </a>
+      <div class="form-group">
+        <label for="vehicle_number">Vehicle Number</label>
+        <input type="text" id="vehicle_number" name="vehicle_number" required placeholder="Enter your vehicle number" autocomplete="off">
+      </div>
 
+      <div class="form-group datetime-inputs">
+        <label for="booking_date">📅 Booking Date</label>
+        <input type="text" id="booking_date" name="booking_date" required placeholder="DD-MM-YYYY" pattern="\d{2}-\d{2}-\d{4}" autocomplete="off">
+        <div class="datetime-helper">
+          📝 Format: DD-MM-YYYY (e.g., 25-12-2023)
+        </div>
+      </div>
+
+      <div class="form-group datetime-inputs">
+        <label for="booking_time">🕐 Booking Time</label>
+        <input type="text" id="booking_time" name="booking_time" required placeholder="HH:MM" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" autocomplete="off">
+        <div class="datetime-helper">
+          📝 24-hour format: HH:MM (e.g., 14:30 for 2:30 PM)
+        </div>
+        <div class="quick-time-buttons">
+          <button type="button" class="quick-time-btn" onclick="setQuickTime('09:00')">9:00 AM</button>
+          <button type="button" class="quick-time-btn" onclick="setQuickTime('12:00')">12:00 PM</button>
+          <button type="button" class="quick-time-btn" onclick="setQuickTime('15:00')">3:00 PM</button>
+          <button type="button" class="quick-time-btn" onclick="setQuickTime('18:00')">6:00 PM</button>
+          <button type="button" class="quick-time-btn" onclick="setCurrentTime()">Now + 30min</button>
+        </div>
+      </div>
+
+      <div class="cost-estimate" id="costEstimate" style="display: none;">
+        <h4>💰 Estimated Minimum Cost</h4>
+        <div class="cost-value">₹<span id="estimatedCost">{{ lot.price_per_hour * 0.25 if lot else 0 }}</span></div>
+        <div style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.5rem;">
+          Based on minimum booking fee (25% of hourly rate)
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>⏰ Booking Policy:</strong><br>
+        • Book up to 30 days in advance<br>
+        • Minimum charge: 25% of hourly rate for cancellations<br>
+        • Full hourly rate applies for time used after booking time<br>
+        • QR code will be sent to your email for entry confirmation
+      </div>
+
+      <div class="button-group">
+        <button type="submit" id="submitBtn">
+          ✓ Reserve Spot
+        </button>
+        <a href="{{ url_for('user_dashboard') }}" class="button-link">
+          ← Cancel
+        </a>
+      </div>
     </form>
-
   </div>
-</body>
 
+  <script>
+    // Generate placeholder values but don't set them as actual values
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const dateStr = String(today.getDate()).padStart(2, '0') + '-' + 
+                       String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                       today.getFullYear();
+        
+        // Set current time + 1 hour as placeholder suggestion
+        const futureHour = (today.getHours() + 1) % 24;
+        const timeStr = String(futureHour).padStart(2, '0') + ':00';
+        
+        // Update placeholders instead of values
+        document.getElementById('booking_date').placeholder = `Today: ${dateStr}`;
+        document.getElementById('booking_time').placeholder = `Suggested: ${timeStr}`;
+        
+        // Don't show cost estimate until user actually enters data
+        // showCostEstimate();
+    });
+
+    function setQuickTime(time) {
+        document.getElementById('booking_time').value = time;
+        showCostEstimate();
+    }
+
+    function setCurrentTime() {
+        const now = new Date();
+        // Add 30 minutes to current time for a reasonable future booking
+        now.setMinutes(now.getMinutes() + 30);
+        const timeStr = String(now.getHours()).padStart(2, '0') + ':' + 
+                       String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('booking_time').value = timeStr;
+        
+        // Also set today's date when "Now" is clicked
+        const today = new Date();
+        const dateStr = String(today.getDate()).padStart(2, '0') + '-' + 
+                       String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                       today.getFullYear();
+        document.getElementById('booking_date').value = dateStr;
+        
+        showCostEstimate();
+    }
+
+    function showCostEstimate() {
+        const dateInput = document.getElementById('booking_date').value;
+        const timeInput = document.getElementById('booking_time').value;
+        
+        // Only show cost estimate if both date and time are filled
+        if (dateInput && timeInput) {
+            const costEstimate = document.getElementById('costEstimate');
+            costEstimate.style.display = 'block';
+        }
+    }
+
+    // Form validation
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        const dateInput = document.getElementById('booking_date').value;
+        const timeInput = document.getElementById('booking_time').value;
+        const vehicleInput = document.getElementById('vehicle_number').value;
+        
+        // Check if required fields are filled
+        if (!dateInput || !timeInput || !vehicleInput.trim()) {
+            e.preventDefault();
+            alert('Please fill in all required fields: vehicle number, booking date, and booking time');
+            return;
+        }
+        
+        // Validate date format
+        const datePattern = /^\d{2}-\d{2}-\d{4}$/;
+        if (!datePattern.test(dateInput)) {
+            e.preventDefault();
+            alert('Please enter date in DD-MM-YYYY format (e.g., 25-12-2023)');
+            return;
+        }
+        
+        // Validate time format
+        const timePattern = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+        if (!timePattern.test(timeInput)) {
+            e.preventDefault();
+            alert('Please enter time in HH:MM format (e.g., 14:30)');
+            return;
+        }
+        
+        // Check if date/time is in the future
+        try {
+            const [day, month, year] = dateInput.split('-');
+            const [hour, minute] = timeInput.split(':');
+            const bookingDateTime = new Date(year, month - 1, day, hour, minute);
+            const now = new Date();
+            
+            if (bookingDateTime <= now) {
+                e.preventDefault();
+                alert('Booking date and time must be in the future');
+                return;
+            }
+            
+            // Check if booking is too far in advance (30 days)
+            const maxDate = new Date();
+            maxDate.setDate(maxDate.getDate() + 30);
+            
+            if (bookingDateTime > maxDate) {
+                e.preventDefault();
+                alert('Booking cannot be made more than 30 days in advance');
+                return;
+            }
+            
+        } catch (error) {
+            e.preventDefault();
+            alert('Invalid date or time format');
+            return;
+        }
+        
+        // Disable submit button to prevent double submission
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '⏳ Processing...';
+    });
+
+    // Input formatting helpers
+    document.getElementById('booking_date').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '-' + value.substring(2);
+        }
+        if (value.length >= 5) {
+            value = value.substring(0, 5) + '-' + value.substring(5, 9);
+        }
+        e.target.value = value;
+        
+        if (value.length === 10) {
+            showCostEstimate();
+        }
+    });
+
+    document.getElementById('booking_time').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + ':' + value.substring(2, 4);
+        }
+        e.target.value = value;
+        
+        if (value.length === 5) {
+            showCostEstimate();
+        }
+    });
+
+    // Show cost estimate when inputs change (only if both are filled)
+    document.getElementById('booking_date').addEventListener('change', showCostEstimate);
+    document.getElementById('booking_time').addEventListener('change', showCostEstimate);
+    
+    // Clear cost estimate if inputs are cleared
+    document.getElementById('booking_date').addEventListener('input', function() {
+        if (!this.value) {
+            document.getElementById('costEstimate').style.display = 'none';
+        }
+    });
+    
+    document.getElementById('booking_time').addEventListener('input', function() {
+        if (!this.value) {
+            document.getElementById('costEstimate').style.display = 'none';
+        }
+    });
+  </script>
+</body>
 </html>

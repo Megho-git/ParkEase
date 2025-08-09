@@ -2,250 +2,629 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - ParkEase</title>
   <style>
-    :root {
-      --primary: #5e1f92;
-      --primary-dark: #47166f;
-      --primary-light: #a87edb;
-      --accent-bg: #dbc8f0;
-      --page-bg: #f4f1fa;
-      --text-color: #2e2e2e;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(135deg, #f2e7fa, #dbc8f0, #f6e3fc);
-      background-attachment: fixed;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
     }
 
     .navbar {
-      background: var(--primary);
-      color: white;
-      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .navbar a {
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      margin-right: 20px;
-      text-decoration: none;
-      font-weight: 500;
+      font-weight: 800;
+      font-size: 1.2rem;
     }
-    .navbar a:hover {
-      text-decoration: underline;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 30px;
-      padding: 40px;
-    }
-    .search-card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-      transition: transform 0.2s ease;
-    }
-    .search-card:hover {
-      transform: translateY(-4px);
-    }
-    .history-card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-      transition: transform 0.2s ease;
-    }
-    .history-card:hover {
-      transform: translateY(-4px);
-    }
-    .search-card, .history-card {
-      align-self: start;
-    }
-    h3 {
-      color: var(--primary-dark);
-      margin-bottom: 15px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 12px;
-      text-align: center;
-      border-bottom: 1px solid #eee;
-      color: var(--text-color);
-    }
-    th {
-      background-color: var(--accent-bg);
-      color: var(--primary-dark);
-    }
-    td button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 6px 12px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    td button:hover {
-      background: var(--primary-dark);
-    }
-    input[type="text"] {
-      padding: 10px;
-      width: 100%;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      margin-bottom: 12px;
-      box-sizing: border-box;
-    }
-    button[type="submit"] {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s ease;
-      width: 100%;
-    }
-    button[type="submit"]:hover {
-      background: var(--primary-dark);
-    }
-    .form-group label {
-      font-weight: 500;
-      color: var(--text-color);
-    }
-    .empty-message {
-      color: #999;
-      font-style: italic;
-      padding: 16px;
-      text-align: center;
-    }
+
     .welcome-text {
-      font-size: 22px;
-      font-weight: 600;
-      margin-right: 40px;
-    }
-    .release-btn {
-      background: var(--primary);
+      font-size: 1.375rem;
+      font-weight: 700;
       color: white;
-      padding: 6px 12px;
-      border-radius: 5px;
+      letter-spacing: -0.025em;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.9);
       text-decoration: none;
       font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .release-btn:hover {
-      background: var(--primary-dark);
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
     }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .main-section {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--gray-100);
+    }
+
+    .sidebar-section {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--gray-100);
+      position: sticky;
+      top: 120px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gray-100);
+    }
+
+    .section-title {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .search-form {
+      margin-bottom: 2rem;
+    }
+
+    .search-input-group {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      background: var(--gray-50);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      font-size: 1.125rem;
+    }
+
     .search-btn {
-      background: var(--primary-dark);
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 14px;
+      padding: 0.875rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .search-btn:hover {
-      background: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
     }
 
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .results-table th {
+      background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+      color: var(--gray-700);
+      font-weight: 600;
+      padding: 1rem;
+      text-align: left;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .results-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .results-table tr:hover {
+      background: var(--gray-50);
+    }
+
+    .book-btn {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .book-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .history-table th {
+      background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+      color: var(--gray-700);
+      font-weight: 600;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .history-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+      color: var(--gray-700);
+      text-align: center;
+    }
+
+    .history-table tr:hover {
+      background: var(--gray-50);
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .status-badge.parked {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .status-badge.completed {
+      background: rgba(156, 163, 175, 0.1);
+      color: var(--gray-500);
+    }
+
+    .release-btn {
+      background: linear-gradient(135deg, var(--warning), #d97706);
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .release-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray-500);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .quick-stat {
+      background: linear-gradient(135deg, var(--gray-50), white);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--gray-200);
+      text-align: center;
+    }
+
+    .quick-stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.25rem;
+    }
+
+    .quick-stat-label {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .sidebar-section {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .navbar-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .quick-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .results-table,
+      .history-table {
+        font-size: 0.875rem;
+      }
+
+      .results-table th,
+      .results-table td,
+      .history-table th,
+      .history-table td {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      
+      .results-table,
+      .history-table {
+        font-size: 0.75rem;
+      }
+    }
   </style>
 </head>
 <body>
-
-  <div class="navbar">
-  <div class="welcome-text">Welcome User</div>
-  <div>
-    <a href="{{ url_for('user_dashboard') }}">Home</a>
-    <a href="{{ url_for('user_summary') }}">Summary</a>
-    <a href="{{ url_for('edit_profile_user') }}">Edit Profile</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
-  </div>
-</div>
-
-
-  <div class="container">
-
-    <div class="history-card">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3>Recent Parking History</h3>
-      </div>
-
-
-      <table>
-        <tr>
-          <th>Spot ID</th>
-          <th>Location</th>
-          <th>Vehicle No.</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-        {% if reservations %}
-          {% for r in reservations %}
-          <tr>
-            <td>{{ r.spot_id }}</td>
-            <td>{{ r.spot.lot.prime_location_name }}</td>
-            <td>{{ r.vehicle_number }}</td>
-            <td>{% if not r.leaving_time %}Parked{% else %}Parked Out{% endif %}</td>
-            <td>
-              {% if not r.leaving_time %}
-                <a href="{{ url_for('release_spot', reservation_id=r.id) }}" class="release-btn">Release</a>
-              {% else %}
-                Parked Out
-              {% endif %}
-
-            </td>
-          </tr>
-          {% endfor %}
-        {% else %}
-          <tr><td colspan="5" class="empty-message">No parking history yet.</td></tr>
-        {% endif %}
-      </table>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-logo">P</div>
+      <div class="welcome-text">Welcome Back</div>
     </div>
+    <div class="navbar-nav">
+      <a href="{{ url_for('user_dashboard') }}" class="nav-link">Dashboard</a>
+      <a href="{{ url_for('user_summary') }}" class="nav-link">Summary</a>
+      <a href="{{ url_for('edit_profile_user') }}" class="nav-link">Profile</a>
+      <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+    </div>
+  </nav>
 
+  <main class="main-content">
+    <div class="dashboard-grid">
+      <div class="main-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <div class="section-icon">🅿️</div>
+            Recent Parking History
+          </h2>
+        </div>
 
-    <div class="search-card">
-      <h3>Search Parking Lots</h3>
-      <form method="GET" action="{{ url_for('search_parking') }}">
-        <label for="lotSearch">Search by Pin Code or Address</label>
-        <input type="text" id="lotSearch" name="location" placeholder="Enter location...">
-        <button class="search-btn">Search</button>
-      </form>
-      {% if search_results is not none %}
-        {% if results %}
-          <table>
-            <tr>
-              <th>Lot ID</th>
-              <th>Address</th>
-              <th>Available Spots</th>
-              <th>Action</th>
-            </tr>
-            {% for lot in results %}
-            <tr>
-              <td>{{ lot.id }}</td>
-              <td>{{ lot.address }}</td>
-              <td>{{ lot.available_spots_count }}</td>
-              <td><a href="{{ url_for('book_spot', lot_id=lot.id, user_id=user_id) }}">Book</a></td>
-            </tr>
-            {% endfor %}
+        {% if reservations %}
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Spot ID</th>
+                <th>Location</th>
+                <th>Vehicle No.</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in reservations %}
+              <tr>
+                <td><strong>{{ r.spot_id }}</strong></td>
+                <td>{{ r.spot.lot.prime_location_name }}</td>
+                <td><code>{{ r.vehicle_number }}</code></td>
+                <td>
+                  {% if not r.leaving_time %}
+                    <span class="status-badge parked">Parked</span>
+                  {% else %}
+                    <span class="status-badge completed">Completed</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if not r.leaving_time %}
+                    <a href="{{ url_for('release_spot', reservation_id=r.id) }}" class="release-btn">Release</a>
+                  {% else %}
+                    <span style="color: var(--gray-400); font-size: 0.75rem;">Completed</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
           </table>
         {% else %}
-          <p style="margin-top: 20px; font-style: italic; color: #999;">No results found.</p>
+          <div class="empty-state">
+            <div class="empty-state-icon">🚗</div>
+            <h3 style="color: var(--gray-600); margin-bottom: 0.5rem;">No Parking History</h3>
+            <p style="color: var(--gray-500);">Your parking history will appear here once you book a spot</p>
+          </div>
         {% endif %}
-      {% endif %}
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-header">
+          <h3 class="section-title">
+            <div class="section-icon">🔍</div>
+            Find Parking
+          </h3>
+        </div>
+
+        <div class="quick-stats">
+          <div class="quick-stat">
+            <div class="quick-stat-value">{{ reservations|length or 0 }}</div>
+            <div class="quick-stat-label">Total Bookings</div>
+          </div>
+          <div class="quick-stat">
+            <div class="quick-stat-value">{{ active_bookings or 0 }}</div>
+            <div class="quick-stat-label">Active</div>
+          </div>
+        </div>
+
+        <div class="search-form">
+          <form method="GET" action="{{ url_for('search_parking') }}">
+            <div class="search-input-group">
+              <span class="search-icon">🔍</span>
+              <input 
+                type="text" 
+                name="location" 
+                class="search-input"
+                placeholder="Pin code or address..."
+                value="{{ request.args.get('location', '') }}"
+              >
+            </div>
+            <button type="submit" class="search-btn">Search Parking Lots</button>
+          </form>
+        </div>
+
+        {% if search_results is not none %}
+          {% if results %}
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Location</th>
+                  <th>Available</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for lot in results %}
+                <tr>
+                  <td>
+                    <strong>{{ lot.prime_location_name }}</strong><br>
+                    <small style="color: var(--gray-500);">{{ lot.address[:30] }}...</small>
+                  </td>
+                  <td>
+                    <strong style="color: var(--success);">{{ lot.available_spots_count }}</strong>
+                    <small style="color: var(--gray-500);"> spots</small>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('book_spot', lot_id=lot.id, user_id=user_id) }}" class="book-btn">Book Now</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="empty-state">
+              <div class="empty-state-icon">🔍</div>
+              <h3 style="color: var(--gray-600); margin-bottom: 0.5rem;">No Results Found</h3>
+              <p style="color: var(--gray-500); font-size: 0.875rem;">Try searching with a different location</p>
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
     </div>
+  </main>
 
-  </div>
+  <script>
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'slideUp 0.6s ease-out forwards';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.main-section, .sidebar-section').forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+
+  <style>
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </body>
 </html>

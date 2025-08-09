@@ -2,136 +2,552 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Spot Details</title>
+  <title>Spot Details - ParkEase</title>
   <style>
-    :root {
-        --primary: #5e1f92;
-        --primary-dark: #47166f;
-        --primary-light: #a87edb;
-        --accent-bg: #dbc8f0;
-        --page-bg: #f4f1fa;
-        --text-color: #2e2e2e;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    body {
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-        background: var(--page-bg);
-        margin: 0;
-        padding: 0;
-    }
-    .navbar {
-        background: var(--primary);
-        color: white;
-        padding: 16px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .navbar a {
-        color: white;
-        margin-right: 20px;
-        text-decoration: none;
-        font-weight: 500;
-    }
-    .container {
-        max-width: 480px;
-        margin: 80px auto;
-        background: white;
-        padding: 30px 30px 40px;
-        border-radius: 14px;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-        text-align: center;
-    }
-    h2 {
-        color: var(--primary-dark);
-        margin-bottom: 24px;
-    }
-    .form-group {
-        text-align: left;
-        margin-bottom: 22px;
-    }
-    label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 6px;
-        color: var(--primary-dark);
-    }
-    input[type="text"], input[type="datetime"], input[type="number"] {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1px solid var(--primary-light);
-        border-radius: 8px;
-        font-size: 16px;
-        color: var(--text-color);
-        background: #f9f6fb;
-        box-sizing: border-box;
-    }
-    input[readonly] {
-        background: #f0e6fa;
-        color: #333;
-        cursor: not-allowed;
-    }
-    .button-group {
-        margin-top: 30px;
-        display: flex;
-        justify-content: center;
-        gap: 16px;
-    }
-    .btn {
-        padding: 12px 24px;
-        border-radius: 8px;
-        text-decoration: none;
-        color: white;
-        font-weight: 500;
-        cursor: pointer;
-        display: inline-block;
-    }
-    .btn-cancel {
-        background: var(--primary);
-    }
-    .btn-cancel:hover {
-        background: var(--primary-dark);
-    }
-    </style>
 
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Copy all your existing styles here... */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .welcome-text {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.025em;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 3rem auto;
+      background: white;
+      padding: 3rem;
+      border-radius: 24px;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .spot-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--error), #dc2626);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+      box-shadow: var(--shadow-lg);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .spot-icon::before {
+      content: "🚗";
+    }
+
+    h2 {
+      color: var(--gray-800);
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: -0.025em;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .detail-section {
+      background: linear-gradient(135deg, var(--gray-50), white);
+      padding: 2rem;
+      border-radius: 16px;
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s ease;
+    }
+
+    .detail-section:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .section-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .status-occupied {
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      color: var(--error);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cost-highlight {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    .duration-badge {
+      background: linear-gradient(135deg, var(--warning), #d97706);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+    }
+
+    .btn {
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 160px;
+      justify-content: center;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-back {
+      background: white;
+      color: var(--gray-700);
+      border: 2px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-back:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-300);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .alert-info {
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      border: 1px solid #3b82f6;
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      color: #1d4ed8;
+      font-weight: 500;
+    }
+
+    .admin-note {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 1px solid #f59e0b;
+      border-left: 4px solid var(--warning);
+      border-radius: 12px;
+      color: #92400e;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 2rem 1rem;
+        padding: 2rem;
+      }
+      
+      .details-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .button-group {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        min-width: auto;
+      }
+      
+      h2 {
+        font-size: 1.75rem;
+      }
+      
+      .info-row {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+    }
+    .btn-release {
+        background: linear-gradient(135deg, var(--warning), #d97706);
+        color: white;
+        box-shadow: var(--shadow-md);
+      }
+
+    .btn-release:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+  </style>
 </head>
 <body>
 
-  <div class="navbar">
-    <div>Parking Management</div>
+<div class="navbar">
+  <div class="navbar-brand">
+    <div class="navbar-logo">P</div>
+    <div class="welcome-text">Admin Panel</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="spot-icon"></div>
+  
+  <h2>Occupied Parking Spot #{{ spot.id }}</h2>
+
+  <div class="alert-info">
+    <strong>ℹ️ Admin View:</strong> This parking spot is currently occupied. You can view the details but cannot modify the reservation.
   </div>
 
-  <div class="container">
-    <h2>Spot Details</h2>
-
-    <div class="form-group">
-      <label>Spot ID</label>
-      <input type="text" value="{{ spot.id }}" readonly>
+  <div class="details-grid">
+    <!-- Spot Information -->
+    <div class="detail-section">
+      <h3 class="section-title">
+        <span>🅿️</span>
+        Spot Information
+      </h3>
+      
+      <div class="info-row">
+        <span class="info-label">Spot ID</span>
+        <span class="info-value">#{{ spot.id }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Location</span>
+        <span class="info-value">{{ spot.lot.prime_location_name }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Address</span>
+        <span class="info-value">{{ spot.lot.address }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="status-occupied">
+          <span>🔴</span>
+          Occupied
+        </span>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Customer ID</label>
-      <input type="text" value="{{ reservation.user_id }}" readonly>
+    <!-- User & Reservation Details -->
+    <div class="detail-section">
+      <h3 class="section-title">
+        <span>👤</span>
+        User Details
+      </h3>
+      
+      <div class="info-row">
+        <span class="info-label">User ID</span>
+        <span class="info-value">#{{ user.id }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Full Name</span>
+        <span class="info-value">{{ user.fullname }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value">{{ user.email }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Vehicle Number</span>
+        <span class="info-value" style="font-family: monospace; background: var(--gray-100); padding: 0.25rem 0.5rem; border-radius: 4px;">{{ reservation.vehicle_number }}</span>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Vehicle Number</label>
-      <input type="text" value="{{ reservation.vehicle_number }}" readonly>
+    <div class="detail-section">
+      <h3 class="section-title">
+        <span>⏰</span>
+        Parking Details
+      </h3>
+      
+      <div class="info-row">
+        <span class="info-label">Reservation ID</span>
+        <span class="info-value">#{{ reservation.id }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Scheduled Time</span>
+        <span class="info-value">{{ planned_start.strftime('%B %d, %Y at %I:%M %p') }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="info-value">{{ status_message }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Duration</span>
+        {% if hours_parked > 0 %}
+          <span class="duration-badge">{{ hours_parked }} hours</span>
+        {% else %}
+          <span class="duration-badge" style="background: linear-gradient(135deg, var(--warning), #d97706);">Scheduled</span>
+        {% endif %}
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Rate per Hour</span>
+        <span class="info-value">₹{{ spot.lot.price_per_hour }}</span>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Parking Time</label>
-      <input type="datetime" value="{{ reservation.parking_time.strftime('%Y-%m-%d %H:%M:%S') }}" readonly>
-    </div>
-
-    <div class="form-group">
-      <label>Estimated Cost (₹)</label>
-      <input type="number" value="{{ est_cost }}" readonly>
-    </div>
-
-    <div class="button-group">
-      <a href="{{ url_for('delete_spot', spot_id=spot.id) }}" class="btn btn-cancel">Close</a>
+    <!-- Cost Information -->
+    <div class="detail-section">
+      <h3 class="section-title">
+        <span>💰</span>
+        Cost Information
+      </h3>
+      
+      <div class="info-row">
+        <span class="info-label">Hourly Rate</span>
+        <span class="info-value">₹{{ spot.lot.price_per_hour }}/hour</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Time Status</span>
+        {% if hours_parked > 0 %}
+          <span class="info-value">{{ hours_parked }} hours (Active)</span>
+        {% else %}
+          <span class="info-value">Not Started (Scheduled)</span>
+        {% endif %}
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Current Cost</span>
+        <span class="cost-highlight">₹{{ estimated_cost }}</span>
+      </div>
+      
+      <div style="margin-top: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px; font-size: 0.875rem; color: var(--gray-600);">
+        {% if hours_parked > 0 %}
+          <strong>Note:</strong> Cost calculated for actual usage time. Rounded up to full hours.
+        {% else %}
+          <strong>Note:</strong> Reservation is scheduled for future. Minimum cancellation fee shown.
+        {% endif %}
+      </div>
     </div>
   </div>
+
+  <div class="admin-note">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+      <span style="font-size: 1.25rem;">⚠️</span>
+      <strong>Admin View Only</strong>
+    </div>
+    <p style="margin: 0;">As an admin, you can view spot details but cannot release occupied spots. Only the user who booked this spot can release it from their dashboard.</p>
+  </div>
+
+  <div class="button-group">
+    <a href="{{ url_for('scan_release', spot_id=spot.id) }}" class="btn btn-release">
+      <span>📱</span>
+      Scan to Release
+    </a>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-back">
+      <span>↩️</span>
+      Back to Dashboard
+    </a>
+  </div>
+
+</div>
+
+<script>
+  // Auto-refresh every 30 seconds to update duration and cost
+  setInterval(function() {
+    location.reload();
+  }, 30000);
+
+  // ESC key to go back
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      window.location.href = "{{ url_for('admin_dashboard') }}";
+    }
+  });
+
+  // Animate numbers
+  document.addEventListener('DOMContentLoaded', function() {
+    const costElement = document.querySelector('.cost-highlight');
+    if (costElement) {
+      costElement.style.animation = 'pulse 2s infinite';
+    }
+  });
+</script>
 
 </body>
 </html>

@@ -340,8 +340,8 @@
 
 <div class="booking-container">
   <div class="booking-header">
-    <h2 class="booking-title">Release Parking Spot</h2>
-    <p class="booking-subtitle">Complete the cancellation process</p>
+    <h2 class="booking-title">Admin Release - Full Payment</h2>
+    <p class="booking-subtitle">Complete the admin-initiated release process</p>
   </div>
 
   <form method="POST" id="releaseForm">
@@ -371,12 +371,11 @@
     </div>
 
     <div class="info-notice">
-      <p class="info-text">
-         <strong>📋 Cancellation Policy:</strong><br>
-    • Cancel before scheduled time: 25% booking fee<br>
-    • Cancel after scheduled time: Full hourly rate charged<br>
-    The amount shown is based on your actual usage time from the scheduled start.
-      </p>
+    <p class="info-text">
+        <strong>⚖️ Admin Release Notice:</strong><br>
+        This release was initiated by admin via QR code scan. The full parking fee is charged as this is considered 
+        a completed parking session, not a cancellation.
+    </p>
     </div>
 
     <div class="button-container">
@@ -384,7 +383,7 @@
         <div class="loading-spinner" id="loadingSpinner"></div>
         <span id="btnText">Release Spot</span>
       </button>
-      <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
         Cancel
       </a>
     </div>
