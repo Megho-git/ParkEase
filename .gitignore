@@ -6,6 +6,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
 # C extensions
 *.so
@@ -158,3 +159,4 @@ logs/
 "__pycache__/" 
 "*.pyc" 
 ".env/" 
+
