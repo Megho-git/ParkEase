@@ -4,7 +4,7 @@ SQLAlchemy==2.0.21
 Flask-SQLAlchemy==3.0.5
 python-dotenv==1.0.0
 qrcode[pil]==7.4.2
-Pillow==10.0.1
+Pillow>=10.1.0
 python-dateutil==2.8.2
 cryptography==41.0.4
 gunicorn==21.2.0
