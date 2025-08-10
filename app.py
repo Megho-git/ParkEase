@@ -1328,7 +1328,9 @@ def forbidden_error(error):
 if __name__ == '__main__':
     with app.app_context():
         try:
+            # Create all tables
             db.create_all()
+            print("✅ Database tables created successfully!")
 
             if not User.query.filter_by(role='admin').first():
                 hashed_pw = generate_password_hash("admin123")
