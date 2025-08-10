@@ -32,6 +32,29 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+with app.app_context():
+    try:
+        # Create all tables if they don't exist
+        db.create_all()
+        
+        # Create default admin if it doesn't exist
+        if not User.query.filter_by(role='admin').first():
+            from werkzeug.security import generate_password_hash
+            hashed_pw = generate_password_hash("admin123")
+            admin = User(
+                email="admin@parkease.com",
+                password=hashed_pw,
+                fullname="Administrator", 
+                address="Admin Office",
+                pincode="000000",
+                role="admin"
+            )
+            db.session.add(admin)
+            db.session.commit()
+            print("✅ Default admin created!")
+    except Exception as e:
+        print(f"Database initialization: {e}")
+        
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=2)
 
 def admin_required(f):
