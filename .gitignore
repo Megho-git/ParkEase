@@ -143,7 +143,7 @@ dmypy.json
 ehthumbs.db
 Thumbs.db
 
-# Database files specific to your app
+# Database files
 *.sqlite3
 *.db
 database.sqlite3
@@ -158,4 +158,5 @@ logs/
 "instance/" 
 "__pycache__/" 
 "*.pyc" 
+
 ".env/" 
